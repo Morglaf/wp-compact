@@ -1,0 +1,134 @@
+.wpsquoosh-wrap {
+	max-width: 960px;
+}
+
+.wpsquoosh-stats {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin: 16px 0 20px;
+}
+
+.wpsquoosh-stat {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	padding: 10px 14px;
+	min-width: 140px;
+	font-weight: 600;
+}
+
+.wpsquoosh-panel {
+	background: #fff;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	padding: 16px 18px 18px;
+	margin-bottom: 18px;
+}
+
+.wpsquoosh-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	gap: 12px 16px;
+	margin-top: 12px;
+}
+
+.wpsquoosh-grid label {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	font-weight: 600;
+}
+
+.wpsquoosh-grid input[type='number'],
+.wpsquoosh-grid select {
+	font-weight: 400;
+	max-width: 100%;
+}
+
+.wpsquoosh-check {
+	flex-direction: row !important;
+	align-items: center;
+	gap: 8px !important;
+	font-weight: 400 !important;
+}
+
+.wpsquoosh-advanced {
+	margin-top: 16px;
+	padding-top: 8px;
+	border-top: 1px solid #dcdcde;
+}
+
+.wpsquoosh-advanced summary {
+	cursor: pointer;
+	font-weight: 600;
+	margin-bottom: 8px;
+}
+
+.wpsquoosh-warning {
+	background: #fcf0f1;
+	border-left: 4px solid #d63638;
+	padding: 10px 12px;
+	margin: 8px 0 12px;
+}
+
+.wpsquoosh-actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	margin-top: 16px;
+}
+
+.wpsquoosh-progress {
+	height: 12px;
+	background: #dcdcde;
+	border-radius: 999px;
+	overflow: hidden;
+}
+
+.wpsquoosh-progress-bar {
+	height: 100%;
+	background: #2271b1;
+	transition: width 0.2s ease;
+}
+
+.wpsquoosh-log {
+	max-height: 280px;
+	overflow: auto;
+	margin: 12px 0 0;
+	padding-left: 18px;
+	font-family: Consolas, Monaco, monospace;
+	font-size: 12px;
+}
+
+.wpsquoosh-log li.is-error {
+	color: #b32d2e;
+}
+
+.wpsquoosh-log li.is-skip {
+	color: #996800;
+}
+
+.wpsquoosh-log li.is-ok {
+	color: #007017;
+}
+
+.wpsquoosh-upload-notice {
+	margin: 8px 0;
+	padding: 6px 10px;
+	background: #f0f6fc;
+	border-left: 3px solid #2271b1;
+}
+
+#wpsquoosh-legacy-table {
+	margin-top: 12px;
+}
+
+#wpsquoosh-legacy-table .check-column {
+	width: 2.2em;
+	padding: 8px 0 8px 3px;
+}
+
+#wpsquoosh-migrate-hint {
+	margin-top: 4px;
+}

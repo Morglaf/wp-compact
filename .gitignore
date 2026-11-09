@@ -1,0 +1,17 @@
+# Dependencies / build
+node_modules/
+npm-debug.log*
+assets/dist/**/*.map
+
+# Local packaging (not committed)
+build-zip.ps1
+dist/
+*.zip
+*.local.ps1
+*.local.sh
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
