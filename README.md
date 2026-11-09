@@ -43,7 +43,10 @@ npm run build
 
 Watch mode: `npm run watch`.
 
-On Windows, local `build-zip.ps1` (gitignored) builds assets and writes `dist/wpsquoosh.zip` without `node_modules` or JS sources.
+On Windows, local helpers (gitignored):
+
+- `build-zip.ps1` — builds assets and writes `dist/wpsquoosh.zip` (no `node_modules` / JS sources)
+- `release.ps1` — if the git tree is clean, builds the zip, tags `vX.Y.Z` from the plugin header, pushes, and creates a GitHub Release with the zip (`gh` required)
 
 Directory assets (icons/banners) live in `.wordpress-org/` and are not part of the plugin zip.
 

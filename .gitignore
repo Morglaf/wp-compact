@@ -5,6 +5,7 @@ assets/dist/**/*.map
 
 # Local packaging (not committed)
 build-zip.ps1
+release.ps1
 dist/
 *.zip
 *.local.ps1
