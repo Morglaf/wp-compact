@@ -21,7 +21,7 @@ function $(sel) {
 	return document.querySelector(sel);
 }
 
-function i18n(key, fallback) {
+function i18n(key, fallback = '') {
 	return window.wpSquooshConfig?.i18n?.[key] || fallback;
 }
 
@@ -92,11 +92,12 @@ async function refreshStats() {
 	try {
 		const stats = await fetchStats();
 		const root = $('#wpsquoosh-stats');
-		root.querySelector('[data-stat="total"]').textContent = `${stats.total} images`;
-		root.querySelector('[data-stat="optimized"]').textContent = `${stats.optimized} déjà compressées`;
+		root.querySelector('[data-stat="total"]').textContent = `${stats.total} ${i18n('images', 'images')}`;
+		root.querySelector('[data-stat="optimized"]').textContent =
+			`${stats.optimized} ${i18n('alreadyCompressed', 'already compressed')}`;
 		root.querySelector('[data-stat="bytes"]').textContent = formatBytes(stats.bytes);
 	} catch (err) {
-		log(`Stats: ${err.message}`, 'is-error');
+		log(`${i18n('statsFailed', 'Stats')}: ${err.message}`, 'is-error');
 	}
 }
 
@@ -115,12 +116,11 @@ async function loadAllMedia() {
 
 async function processOne(item, settings, migrate) {
 	if (!migrate && item.same_settings && item.already_optimized) {
-		return { status: 'skip', reason: 'mêmes réglages' };
+		return { status: 'skip', reason: i18n('sameSettings', 'same settings') };
 	}
 
-	// Already webp during migrate: still re-encode optional, but skip if already webp and no pending needed.
 	if (migrate && item.mime === 'image/webp' && !item.pending_cleanup) {
-		return { status: 'skip', reason: 'déjà WebP' };
+		return { status: 'skip', reason: i18n('alreadyWebp', 'already WebP') };
 	}
 
 	const { buffer, mime } = await fetchMediaFile(item.id);
@@ -134,12 +134,15 @@ async function processOne(item, settings, migrate) {
 	const minSave = Number(settings.min_savings_pct) || 0;
 
 	if (!migrate && !settings.allow_larger && newSize >= originalSize) {
-		return { status: 'skip', reason: `pas de gain (${formatBytes(originalSize)} → ${formatBytes(newSize)})` };
+		return {
+			status: 'skip',
+			reason: `${i18n('noGain', 'no savings')} (${formatBytes(originalSize)} → ${formatBytes(newSize)})`,
+		};
 	}
 	if (!migrate && savedPct < minSave && !settings.allow_larger) {
 		return {
 			status: 'skip',
-			reason: `gain ${savedPct.toFixed(1)}% < seuil ${minSave}%`,
+			reason: `${savedPct.toFixed(1)}% < ${i18n('threshold', 'threshold')} ${minSave}%`,
 		};
 	}
 
@@ -174,12 +177,15 @@ async function runPool(items, settings, migrate) {
 				done += 1;
 				setProgress(done, total);
 				if (res.status === 'skip') {
-					log(`#${item.id} ${item.title}: ignoré (${res.reason})`, 'is-skip');
+					log(
+						`#${item.id} ${item.title}: ${i18n('ignored', 'skipped')} (${res.reason})`,
+						'is-skip'
+					);
 				} else if (migrate) {
 					const urls = res.replaced.urls_updated ?? 0;
 					const legacy = (res.replaced.legacy_files || []).length;
 					log(
-						`#${item.id} ${item.title}: → WebP ${formatBytes(res.replaced.compressed_size)} | ${urls} remplacements BDD | ${legacy} legacy tagué(s)`,
+						`#${item.id} ${item.title}: → WebP ${formatBytes(res.replaced.compressed_size)} | ${urls} ${i18n('dbReplacements', 'DB replacements')} | ${legacy} ${i18n('legacyTagged', 'legacy tagged')}`,
 						'is-ok'
 					);
 				} else {
@@ -208,9 +214,9 @@ async function onSave() {
 	try {
 		state.settings = await saveSettings(settings);
 		window.wpSquooshConfig.settings = state.settings;
-		log('Réglages enregistrés.', 'is-ok');
+		log(i18n('settingsSaved', 'Settings saved.'), 'is-ok');
 	} catch (err) {
-		log(`Enregistrement: ${err.message}`, 'is-error');
+		log(`${i18n('saveFailed', 'Save failed')}: ${err.message}`, 'is-error');
 	}
 }
 
@@ -221,7 +227,7 @@ async function runJob(migrate) {
 		const ok = window.confirm(
 			i18n(
 				'migrateConfirm',
-				'Migrer toute la médiathèque vers WebP et réécrire les liens en base ? Les anciens fichiers seront conservés jusqu’au nettoyage.'
+				'Migrate the entire Media Library to WebP and rewrite links in the database? Previous files will be kept until cleanup.'
 			)
 		);
 		if (!ok) return;
@@ -240,20 +246,26 @@ async function runJob(migrate) {
 			await saveSettings(settings);
 		}
 		await initWorker();
-		log(migrate ? 'Migration WebP : chargement médiathèque…' : 'Chargement de la médiathèque…');
+		log(
+			migrate
+				? i18n('loadingMigrate', 'WebP migration: loading Media Library…')
+				: i18n('loadingLibrary', 'Loading Media Library…')
+		);
 		const items = await loadAllMedia();
 		const eligible = migrate
 			? items.filter((it) => it.mime !== 'image/webp' || it.pending_cleanup)
 			: items;
-		// For migrate, process non-webp primarily; already-webp without cleanup skipped in processOne.
 		const list = migrate ? items.filter((it) => it.mime !== 'image/webp') : eligible;
-		log(`${list.length} image(s) à traiter.`);
+		log(`${list.length} ${i18n('imagesToProcess', 'image(s) to process.')}`);
 		await runPool(list, settings, migrate);
-		log(state.stop ? 'Arrêté.' : 'Terminé.', state.stop ? 'is-skip' : 'is-ok');
+		log(
+			state.stop ? i18n('stopped', 'Stopped.') : i18n('done', 'Done'),
+			state.stop ? 'is-skip' : 'is-ok'
+		);
 		await refreshStats();
 		await refreshLegacy();
 	} catch (err) {
-		log(`Échec: ${err.message}`, 'is-error');
+		log(`${i18n('jobFailed', 'Failed')}: ${err.message}`, 'is-error');
 	} finally {
 		setRunningUi(false);
 	}
@@ -270,11 +282,12 @@ async function refreshLegacy() {
 	try {
 		const data = await fetchLegacyPage(1, 100);
 		const root = $('#wpsquoosh-legacy-stats');
-		root.querySelector('[data-legacy="total"]').textContent = `${data.total} à nettoyer`;
+		root.querySelector('[data-legacy="total"]').textContent =
+			`${data.total} ${i18n('toClean', 'to clean')}`;
 		root.querySelector('[data-legacy="bytes"]').textContent = formatBytes(data.bytes);
 
 		if (!data.items || !data.items.length) {
-			tbody.innerHTML = '<tr><td colspan="5">Aucun fichier legacy tagué.</td></tr>';
+			tbody.innerHTML = `<tr><td colspan="5">${escapeHtml(i18n('noLegacy', 'No tagged legacy files.'))}</td></tr>`;
 			return;
 		}
 
@@ -290,7 +303,7 @@ async function refreshLegacy() {
 			)
 			.join('');
 	} catch (err) {
-		tbody.innerHTML = `<tr><td colspan="5">Erreur: ${escapeHtml(err.message)}</td></tr>`;
+		tbody.innerHTML = `<tr><td colspan="5">${escapeHtml(i18n('error', 'Error'))}: ${escapeHtml(err.message)}</td></tr>`;
 	}
 }
 
@@ -311,41 +324,49 @@ function selectedLegacyIds() {
 async function onPurgeSelected() {
 	const ids = selectedLegacyIds();
 	if (!ids.length) {
-		log('Aucune sélection à purger.', 'is-skip');
+		log(i18n('noSelection', 'Nothing selected to purge.'), 'is-skip');
 		return;
 	}
-	if (!window.confirm(i18n('purgeConfirm', 'Supprimer définitivement les fichiers legacy sélectionnés ?'))) {
+	if (
+		!window.confirm(
+			i18n('purgeConfirm', 'Permanently delete the selected legacy files?')
+		)
+	) {
 		return;
 	}
 	try {
 		const res = await purgeLegacy({ ids });
 		log(
-			`Purge: ${res.purged} médias, ${res.files_deleted} fichiers, ${formatBytes(res.bytes_freed)} libérés.`,
+			`${i18n('purgeSummary', 'Purge')}: ${res.purged} ${i18n('mediaItems', 'media items')}, ${res.files_deleted} ${i18n('filesDeleted', 'files')}, ${formatBytes(res.bytes_freed)} ${i18n('freed', 'freed')}.`,
 			'is-ok'
 		);
 		await refreshLegacy();
 	} catch (err) {
-		log(`Purge: ${err.message}`, 'is-error');
+		log(`${i18n('purgeSummary', 'Purge')}: ${err.message}`, 'is-error');
 	}
 }
 
 async function onPurgeAll() {
 	if (!window.wpSquooshConfig?.canManage) {
-		log('Purge globale réservée aux administrateurs.', 'is-error');
+		log(i18n('purgeAdminOnly', 'Full purge is limited to administrators.'), 'is-error');
 		return;
 	}
-	if (!window.confirm(i18n('purgeAllConfirm', 'Purger TOUS les fichiers legacy tagués ? Action irréversible.'))) {
+	if (
+		!window.confirm(
+			i18n('purgeAllConfirm', 'Purge ALL tagged legacy files? This cannot be undone.')
+		)
+	) {
 		return;
 	}
 	try {
 		const res = await purgeLegacy({ all: true });
 		log(
-			`Purge totale: ${res.purged} médias, ${res.files_deleted} fichiers, ${formatBytes(res.bytes_freed)} libérés.`,
+			`${i18n('purgeTotalSummary', 'Full purge')}: ${res.purged} ${i18n('mediaItems', 'media items')}, ${res.files_deleted} ${i18n('filesDeleted', 'files')}, ${formatBytes(res.bytes_freed)} ${i18n('freed', 'freed')}.`,
 			'is-ok'
 		);
 		await refreshLegacy();
 	} catch (err) {
-		log(`Purge: ${err.message}`, 'is-error');
+		log(`${i18n('purgeSummary', 'Purge')}: ${err.message}`, 'is-error');
 	}
 }
 
@@ -365,5 +386,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	});
 	refreshStats();
 	refreshLegacy();
-	initWorker().catch((err) => log(`Worker: ${err.message}`, 'is-error'));
+	initWorker().catch((err) =>
+		log(`${i18n('workerFailed', 'Worker')}: ${err.message}`, 'is-error')
+	);
 });

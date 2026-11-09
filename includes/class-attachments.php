@@ -152,11 +152,11 @@ class Attachments {
 	public static function file_path( $attachment_id ) {
 		$path = get_attached_file( $attachment_id );
 		if ( ! $path || ! file_exists( $path ) ) {
-			return new \WP_Error( 'wpsquoosh_missing_file', __( 'Fichier introuvable.', 'wpsquoosh' ) );
+			return new \WP_Error( 'wpsquoosh_missing_file', __( 'File not found.', 'wpsquoosh' ) );
 		}
 		$mime = get_post_mime_type( $attachment_id );
 		if ( ! in_array( $mime, self::supported_mimes(), true ) ) {
-			return new \WP_Error( 'wpsquoosh_unsupported', __( 'Type MIME non supporté.', 'wpsquoosh' ) );
+			return new \WP_Error( 'wpsquoosh_unsupported', __( 'Unsupported MIME type.', 'wpsquoosh' ) );
 		}
 		return $path;
 	}
@@ -227,7 +227,7 @@ class Attachments {
 		}
 
 		if ( empty( $file['tmp_name'] ) || ! is_uploaded_file( $file['tmp_name'] ) ) {
-			return new \WP_Error( 'wpsquoosh_no_upload', __( 'Aucun fichier compressé reçu.', 'wpsquoosh' ) );
+			return new \WP_Error( 'wpsquoosh_no_upload', __( 'No compressed file received.', 'wpsquoosh' ) );
 		}
 
 		$migrate_webp = ! empty( $args['migrate_webp'] );
@@ -238,15 +238,23 @@ class Attachments {
 		$allow_larger  = ! empty( $args['allow_larger'] ) || $migrate_webp;
 
 		if ( $new_size <= 0 ) {
-			return new \WP_Error( 'wpsquoosh_empty', __( 'Fichier compressé vide.', 'wpsquoosh' ) );
+			return new \WP_Error( 'wpsquoosh_empty', __( 'Compressed file is empty.', 'wpsquoosh' ) );
 		}
 
 		if ( ! $allow_larger && $new_size >= $original_size ) {
 			return new \WP_Error(
 				'wpsquoosh_no_gain',
-				__( 'Le fichier compressé n’est pas plus petit ; remplacement annulé.', 'wpsquoosh' ),
+				__( 'Compressed file is not smaller; replacement cancelled.', 'wpsquoosh' ),
 				array( 'original_size' => $original_size, 'new_size' => $new_size )
 			);
+		}
+
+		$detected_mime = wp_get_image_mime( $file['tmp_name'] );
+		if ( ! $detected_mime || ! in_array( $detected_mime, self::supported_mimes(), true ) ) {
+			return new \WP_Error( 'wpsquoosh_unsupported', __( 'Uploaded file MIME type is not supported.', 'wpsquoosh' ) );
+		}
+		if ( $migrate_webp && 'image/webp' !== $detected_mime ) {
+			return new \WP_Error( 'wpsquoosh_unsupported', __( 'WebP migration requires a WebP file.', 'wpsquoosh' ) );
 		}
 
 		$backup_path = null;
@@ -271,11 +279,17 @@ class Attachments {
 			$url_snapshot_before = Url_Rewriter::snapshot_attachment_urls( $attachment_id, $path, $old_meta, $old_rel_file, $old_url );
 		}
 
-		$new_mime = isset( $args['mime'] ) ? sanitize_mime_type( $args['mime'] ) : get_post_mime_type( $attachment_id );
-		$old_mime = get_post_mime_type( $attachment_id );
+		$claimed_mime = isset( $args['mime'] ) ? sanitize_mime_type( $args['mime'] ) : '';
+		$old_mime     = get_post_mime_type( $attachment_id );
+		$new_mime     = $detected_mime;
 
 		if ( $migrate_webp ) {
 			$new_mime = 'image/webp';
+		} elseif ( $claimed_mime && in_array( $claimed_mime, self::supported_mimes(), true ) ) {
+			// Prefer server-detected MIME; allow claimed only when it matches detection.
+			if ( $claimed_mime === $detected_mime ) {
+				$new_mime = $claimed_mime;
+			}
 		}
 
 		$ext_map = array(
@@ -299,7 +313,7 @@ class Attachments {
 			}
 
 			if ( ! move_uploaded_file( $file['tmp_name'], $new_path ) ) {
-				return new \WP_Error( 'wpsquoosh_move', __( 'Impossible d’écrire le fichier compressé.', 'wpsquoosh' ) );
+				return new \WP_Error( 'wpsquoosh_move', __( 'Unable to write the compressed file.', 'wpsquoosh' ) );
 			}
 
 			if ( ! $keep_legacy && realpath( $new_path ) !== realpath( $path ) && file_exists( $path ) ) {
@@ -318,7 +332,7 @@ class Attachments {
 			if ( ! move_uploaded_file( $file['tmp_name'], $target_path ) ) {
 				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_copy
 				if ( ! copy( $file['tmp_name'], $target_path ) ) {
-					return new \WP_Error( 'wpsquoosh_move', __( 'Impossible d’écrire le fichier compressé.', 'wpsquoosh' ) );
+					return new \WP_Error( 'wpsquoosh_move', __( 'Unable to write the compressed file.', 'wpsquoosh' ) );
 				}
 				// phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink
 				@unlink( $file['tmp_name'] );

@@ -44,6 +44,10 @@ function workerSettings() {
 	};
 }
 
+function i18n(key, fallback = '') {
+	return window.wpSquooshConfig?.i18n?.[key] || fallback;
+}
+
 function notice(text) {
 	let el = document.getElementById('wpsquoosh-upload-notice');
 	if (!el) {
@@ -62,6 +66,18 @@ function notice(text) {
 		anchor.prepend(el);
 	}
 	el.textContent = text;
+}
+
+function sprintf(template, ...args) {
+	let i = 0;
+	return String(template).replace(/%(\d+)\$s|%s|%d/g, (match, num) => {
+		if (num) {
+			return String(args[Number(num) - 1] ?? '');
+		}
+		const val = args[i];
+		i += 1;
+		return String(val ?? '');
+	});
 }
 
 /**
@@ -182,13 +198,22 @@ async function maybeCompressFile(file) {
 	if (mode === 'compress') {
 		if (newSize >= originalSize && !s.allow_larger) {
 			notice(
-				`WPsquoosh: ${typed.name} non remplacé (pas de gain, ${formatBytes(originalSize)}).`
+				sprintf(
+					i18n('uploadNoGain', 'WPsquoosh: %s not replaced (no savings, %s).'),
+					typed.name,
+					formatBytes(originalSize)
+				)
 			);
 			return typed;
 		}
 		if (savedPct < minSave && !s.allow_larger) {
 			notice(
-				`WPsquoosh: ${typed.name} ignoré (gain ${savedPct.toFixed(1)}% < ${minSave}%).`
+				sprintf(
+					i18n('uploadBelowMin', 'WPsquoosh: %1$s skipped (savings %2$s%% < %3$s%%).'),
+					typed.name,
+					savedPct.toFixed(1),
+					String(minSave)
+				)
 			);
 			return typed;
 		}
@@ -202,7 +227,14 @@ async function maybeCompressFile(file) {
 
 	const modeLabel = mode === 'webp' && mime !== 'image/webp' ? '→ WebP ' : '';
 	notice(
-		`WPsquoosh: ${typed.name} ${modeLabel}${formatBytes(originalSize)} → ${formatBytes(newSize)} (−${savedPct.toFixed(1)}%).`
+		sprintf(
+			i18n('uploadDone', 'WPsquoosh: %1$s %2$s%3$s → %4$s (−%5$s%%).'),
+			typed.name,
+			modeLabel,
+			formatBytes(originalSize),
+			formatBytes(newSize),
+			savedPct.toFixed(1)
+		)
 	);
 	return compressed;
 }
@@ -230,7 +262,13 @@ function stealAndRequeue(uploader, files) {
 		const extracted = extractNativeFile(f);
 		if (!extracted) {
 			notice(
-				`WPsquoosh: lecture impossible pour ${f.name || 'fichier'} — upload original sans compression.`
+				sprintf(
+					i18n(
+						'uploadUnreadable',
+						'WPsquoosh: cannot read %s — uploading original without compression.'
+					),
+					f.name || i18n('uploadFileFallback', 'file')
+				)
 			);
 			continue;
 		}
@@ -256,7 +294,12 @@ function stealAndRequeue(uploader, files) {
 		/* ignore */
 	}
 
-	notice(`WPsquoosh: compression de ${pending.length} image(s)…`);
+	notice(
+		sprintf(
+			i18n('uploadCompressing', 'WPsquoosh: compressing %d image(s)…'),
+			pending.length
+		)
+	);
 
 	(async () => {
 		try {
@@ -275,7 +318,14 @@ function stealAndRequeue(uploader, files) {
 					uploader.addFile(compressed);
 				} catch (err) {
 					notice(
-						`WPsquoosh: échec sur ${item.plName} (${err.message}) — envoi de l’original.`
+						sprintf(
+							i18n(
+								'uploadFailedItem',
+								'WPsquoosh: failed on %1$s (%2$s) — sending original.'
+							),
+							item.plName,
+							err.message
+						)
 					);
 					readyBlobs.add(item.file);
 					try {
@@ -286,7 +336,7 @@ function stealAndRequeue(uploader, files) {
 				}
 			}
 		} catch (err) {
-			notice(`WPsquoosh: ${err.message}`);
+			notice(sprintf(i18n('uploadError', 'WPsquoosh: %s'), err.message));
 			for (const item of pending) {
 				readyBlobs.add(item.file);
 				try {
@@ -478,7 +528,7 @@ function patchInputFallback() {
 				input.files = dt.files;
 				input.dispatchEvent(new Event('change', { bubbles: true }));
 			} catch (err) {
-				notice(`WPsquoosh: ${err.message}`);
+				notice(sprintf(i18n('uploadError', 'WPsquoosh: %s'), err.message));
 			} finally {
 				setTimeout(() => {
 					delete input.dataset.wpsquooshHandled;

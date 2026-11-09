@@ -62,7 +62,7 @@ export async function decodeImage(mime, buffer) {
 		case 'image/avif':
 			return decodeAvif(buffer);
 		default:
-			throw new Error(`MIME non supporté: ${mime}`);
+			throw new Error(`Unsupported MIME: ${mime}`);
 	}
 }
 
@@ -129,7 +129,7 @@ export async function encodeImage(image, targetMime, settings) {
 			return u8ToArrayBuffer(buf);
 		}
 		default:
-			throw new Error(`Encode MIME non supporté: ${targetMime}`);
+			throw new Error(`Unsupported encode MIME: ${targetMime}`);
 	}
 }
 

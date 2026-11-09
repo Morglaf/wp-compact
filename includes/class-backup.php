@@ -43,7 +43,7 @@ class Backup {
 	public static function ensure_dir( $attachment_id ) {
 		$dir = self::dir_for( $attachment_id );
 		if ( ! wp_mkdir_p( $dir ) ) {
-			return new \WP_Error( 'wpsquoosh_backup_mkdir', __( 'Impossible de créer le dossier de backup.', 'wpsquoosh' ) );
+			return new \WP_Error( 'wpsquoosh_backup_mkdir', __( 'Unable to create the backup folder.', 'wpsquoosh' ) );
 		}
 
 		$index = trailingslashit( dirname( $dir ) ) . 'index.php';
@@ -64,7 +64,7 @@ class Backup {
 	 */
 	public static function copy_original( $attachment_id, $source_path ) {
 		if ( ! file_exists( $source_path ) || ! is_readable( $source_path ) ) {
-			return new \WP_Error( 'wpsquoosh_backup_source', __( 'Fichier source introuvable pour la backup.', 'wpsquoosh' ) );
+			return new \WP_Error( 'wpsquoosh_backup_source', __( 'Backup source file not found.', 'wpsquoosh' ) );
 		}
 
 		$dir = self::ensure_dir( $attachment_id );
@@ -80,7 +80,7 @@ class Backup {
 		}
 
 		if ( ! copy( $source_path, $dest ) ) {
-			return new \WP_Error( 'wpsquoosh_backup_copy', __( 'Échec de la copie de backup.', 'wpsquoosh' ) );
+			return new \WP_Error( 'wpsquoosh_backup_copy', __( 'Backup copy failed.', 'wpsquoosh' ) );
 		}
 
 		update_post_meta( $attachment_id, '_wpsquoosh_backup_path', $dest );

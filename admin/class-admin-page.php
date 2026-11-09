@@ -26,13 +26,13 @@ class Admin_Page {
 	}
 
 	/**
-	 * Media submenu.
+	 * Media submenu (batch UI — administrators).
 	 */
 	public function register_menu() {
 		add_media_page(
 			__( 'WPsquoosh', 'wpsquoosh' ),
-			__( 'Compresser (WPsquoosh)', 'wpsquoosh' ),
-			'upload_files',
+			__( 'Compress (WPsquoosh)', 'wpsquoosh' ),
+			'manage_options',
 			self::PAGE_SLUG,
 			array( $this, 'render_page' )
 		);
@@ -54,15 +54,57 @@ class Admin_Page {
 			'workerUrl' => WPSQUOOSH_URL . 'assets/dist/compress-worker.js',
 			'canManage' => current_user_can( 'manage_options' ),
 			'i18n'      => array(
-				'advancedWarning' => __( 'Le mode avancé peut changer le format ou les dimensions et casser des thèmes / CSS / URLs hardcodées.', 'wpsquoosh' ),
-				'compressing'     => __( 'Compression…', 'wpsquoosh' ),
-				'done'            => __( 'Terminé', 'wpsquoosh' ),
-				'skipped'         => __( 'Ignoré', 'wpsquoosh' ),
-				'error'           => __( 'Erreur', 'wpsquoosh' ),
-				'uploadBadge'     => __( 'WPsquoosh', 'wpsquoosh' ),
-				'migrateConfirm'  => __( 'Migrer toute la médiathèque vers WebP et réécrire les liens en base ? Les anciens fichiers seront conservés jusqu’au nettoyage.', 'wpsquoosh' ),
-				'purgeConfirm'    => __( 'Supprimer définitivement les fichiers legacy sélectionnés ?', 'wpsquoosh' ),
-				'purgeAllConfirm' => __( 'Purger TOUS les fichiers legacy tagués ? Action irréversible.', 'wpsquoosh' ),
+				'advancedWarning'     => __( 'Advanced mode can change format or dimensions and break themes / CSS / hardcoded URLs.', 'wpsquoosh' ),
+				'compressing'         => __( 'Compressing…', 'wpsquoosh' ),
+				'done'                => __( 'Done', 'wpsquoosh' ),
+				'skipped'             => __( 'Skipped', 'wpsquoosh' ),
+				'error'               => __( 'Error', 'wpsquoosh' ),
+				'stopped'             => __( 'Stopped.', 'wpsquoosh' ),
+				'uploadBadge'         => __( 'WPsquoosh', 'wpsquoosh' ),
+				'migrateConfirm'      => __( 'Migrate the entire Media Library to WebP and rewrite links in the database? Previous files will be kept until cleanup.', 'wpsquoosh' ),
+				'purgeConfirm'        => __( 'Permanently delete the selected legacy files?', 'wpsquoosh' ),
+				'purgeAllConfirm'     => __( 'Purge ALL tagged legacy files? This cannot be undone.', 'wpsquoosh' ),
+				'settingsSaved'       => __( 'Settings saved.', 'wpsquoosh' ),
+				'saveFailed'          => __( 'Save failed', 'wpsquoosh' ),
+				'statsFailed'         => __( 'Stats', 'wpsquoosh' ),
+				'images'              => __( 'images', 'wpsquoosh' ),
+				'alreadyCompressed'   => __( 'already compressed', 'wpsquoosh' ),
+				'sameSettings'        => __( 'same settings', 'wpsquoosh' ),
+				'alreadyWebp'         => __( 'already WebP', 'wpsquoosh' ),
+				'noGain'              => __( 'no savings', 'wpsquoosh' ),
+				'loadingLibrary'      => __( 'Loading Media Library…', 'wpsquoosh' ),
+				'loadingMigrate'      => __( 'WebP migration: loading Media Library…', 'wpsquoosh' ),
+				'imagesToProcess'     => __( 'image(s) to process.', 'wpsquoosh' ),
+				'jobFailed'           => __( 'Failed', 'wpsquoosh' ),
+				'ignored'             => __( 'skipped', 'wpsquoosh' ),
+				'dbReplacements'      => __( 'DB replacements', 'wpsquoosh' ),
+				'legacyTagged'        => __( 'legacy tagged', 'wpsquoosh' ),
+				'toClean'             => __( 'to clean', 'wpsquoosh' ),
+				'noLegacy'            => __( 'No tagged legacy files.', 'wpsquoosh' ),
+				'noSelection'         => __( 'Nothing selected to purge.', 'wpsquoosh' ),
+				'purgeAdminOnly'      => __( 'Full purge is limited to administrators.', 'wpsquoosh' ),
+				'purgeSummary'        => __( 'Purge', 'wpsquoosh' ),
+				'purgeTotalSummary'   => __( 'Full purge', 'wpsquoosh' ),
+				'mediaItems'          => __( 'media items', 'wpsquoosh' ),
+				'filesDeleted'        => __( 'files', 'wpsquoosh' ),
+				'freed'               => __( 'freed', 'wpsquoosh' ),
+				'workerFailed'        => __( 'Worker', 'wpsquoosh' ),
+				'threshold'           => __( 'threshold', 'wpsquoosh' ),
+				/* translators: %s: file name */
+				'uploadNoGain'        => __( 'WPsquoosh: %s not replaced (no savings, %s).', 'wpsquoosh' ),
+				/* translators: 1: file name 2: savings percent 3: minimum percent */
+				'uploadBelowMin'      => __( 'WPsquoosh: %1$s skipped (savings %2$s%% < %3$s%%).', 'wpsquoosh' ),
+				/* translators: 1: file name 2: optional WebP label 3: original size 4: new size 5: savings percent */
+				'uploadDone'          => __( 'WPsquoosh: %1$s %2$s%3$s → %4$s (−%5$s%%).', 'wpsquoosh' ),
+				/* translators: %s: file name */
+				'uploadUnreadable'    => __( 'WPsquoosh: cannot read %s — uploading original without compression.', 'wpsquoosh' ),
+				'uploadFileFallback'  => __( 'file', 'wpsquoosh' ),
+				/* translators: %d: number of images */
+				'uploadCompressing'   => __( 'WPsquoosh: compressing %d image(s)…', 'wpsquoosh' ),
+				/* translators: 1: file name 2: error message */
+				'uploadFailedItem'    => __( 'WPsquoosh: failed on %1$s (%2$s) — sending original.', 'wpsquoosh' ),
+				/* translators: %s: error message */
+				'uploadError'         => __( 'WPsquoosh: %s', 'wpsquoosh' ),
 			),
 		);
 	}
@@ -134,12 +176,11 @@ class Admin_Page {
 	 * @param string $hook Current admin hook.
 	 */
 	public function enqueue( $hook ) {
-		$is_batch = ( 'media_page_' . self::PAGE_SLUG === $hook );
-		$settings = Settings::get_all();
+		$is_batch  = ( 'media_page_' . self::PAGE_SLUG === $hook );
 		$upload_on = $this->upload_enabled();
 
 		// Screens that commonly open the media modal / uploader.
-		$upload_hooks = array(
+		$upload_hooks     = array(
 			'upload.php',
 			'media-new.php',
 			'post.php',
@@ -191,8 +232,8 @@ class Admin_Page {
 	 * Render batch page shell.
 	 */
 	public function render_page() {
-		if ( ! current_user_can( 'upload_files' ) ) {
-			wp_die( esc_html__( 'Accès refusé.', 'wpsquoosh' ) );
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'Access denied.', 'wpsquoosh' ) );
 		}
 		include WPSQUOOSH_PATH . 'admin/views/page-batch.php';
 	}

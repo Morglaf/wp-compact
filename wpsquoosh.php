@@ -1,13 +1,15 @@
 <?php
 /**
  * Plugin Name:       WPsquoosh
- * Description:       Compresse les images de la médiathèque dans le navigateur via codecs WASM dérivés de Squoosh (jSquash). Remplacement de l’original, backup optionnelle, batch et compression à l’upload.
+ * Description:       Compress Media Library images in the browser with Squoosh-derived WASM codecs (jSquash). Optional backup, batch jobs, and upload-time compression. Not affiliated with Google or Squoosh.
  * Version:           1.0.0
  * Requires at least: 6.0
  * Requires PHP:      7.4
  * Author:            morglaf
- * License:           Apache-2.0
+ * License:           GPLv2 or later
+ * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       wpsquoosh
+ * Domain Path:       /languages
  *
  * @package WPSquoosh
  */
@@ -30,6 +32,18 @@ require_once WPSQUOOSH_PATH . 'includes/class-plugin.php';
 if ( is_admin() ) {
 	require_once WPSQUOOSH_PATH . 'admin/class-admin-page.php';
 }
+
+/**
+ * Load translations.
+ */
+function wpsquoosh_load_textdomain() {
+	load_plugin_textdomain(
+		'wpsquoosh',
+		false,
+		dirname( plugin_basename( WPSQUOOSH_FILE ) ) . '/languages'
+	);
+}
+add_action( 'plugins_loaded', 'wpsquoosh_load_textdomain', 1 );
 
 /**
  * Bootstrap the plugin.

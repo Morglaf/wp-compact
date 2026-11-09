@@ -34,7 +34,7 @@ class Rest {
 				array(
 					'methods'             => \WP_REST_Server::CREATABLE,
 					'callback'            => array( $this, 'update_settings' ),
-					'permission_callback' => array( $this, 'can_upload' ),
+					'permission_callback' => array( $this, 'can_manage' ),
 				),
 			)
 		);
@@ -45,7 +45,7 @@ class Rest {
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_stats' ),
-				'permission_callback' => array( $this, 'can_upload' ),
+				'permission_callback' => array( $this, 'can_manage' ),
 			)
 		);
 
@@ -55,7 +55,7 @@ class Rest {
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'list_media' ),
-				'permission_callback' => array( $this, 'can_upload' ),
+				'permission_callback' => array( $this, 'can_manage' ),
 				'args'                => array(
 					'page'     => array(
 						'type'    => 'integer',
@@ -75,7 +75,7 @@ class Rest {
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'get_file' ),
-				'permission_callback' => array( $this, 'can_upload' ),
+				'permission_callback' => array( $this, 'can_edit_attachment' ),
 			)
 		);
 
@@ -85,7 +85,7 @@ class Rest {
 			array(
 				'methods'             => \WP_REST_Server::CREATABLE,
 				'callback'            => array( $this, 'replace_media' ),
-				'permission_callback' => array( $this, 'can_upload' ),
+				'permission_callback' => array( $this, 'can_edit_attachment' ),
 			)
 		);
 
@@ -95,7 +95,7 @@ class Rest {
 			array(
 				'methods'             => \WP_REST_Server::READABLE,
 				'callback'            => array( $this, 'list_legacy' ),
-				'permission_callback' => array( $this, 'can_upload' ),
+				'permission_callback' => array( $this, 'can_manage' ),
 				'args'                => array(
 					'page'     => array(
 						'type'    => 'integer',
@@ -115,7 +115,7 @@ class Rest {
 			array(
 				'methods'             => \WP_REST_Server::CREATABLE,
 				'callback'            => array( $this, 'purge_legacy' ),
-				'permission_callback' => array( $this, 'can_upload' ),
+				'permission_callback' => array( $this, 'can_manage' ),
 			)
 		);
 	}
@@ -132,6 +132,34 @@ class Rest {
 	 */
 	public function can_upload() {
 		return current_user_can( 'upload_files' );
+	}
+
+	/**
+	 * Upload capability plus edit rights on the attachment.
+	 *
+	 * @param \WP_REST_Request $request Request.
+	 * @return bool|\WP_Error
+	 */
+	public function can_edit_attachment( $request ) {
+		if ( ! current_user_can( 'upload_files' ) ) {
+			return false;
+		}
+		$id = (int) $request['id'];
+		if ( $id <= 0 || 'attachment' !== get_post_type( $id ) ) {
+			return new \WP_Error(
+				'wpsquoosh_forbidden',
+				__( 'Invalid attachment.', 'wpsquoosh' ),
+				array( 'status' => 404 )
+			);
+		}
+		if ( ! current_user_can( 'edit_post', $id ) ) {
+			return new \WP_Error(
+				'wpsquoosh_forbidden',
+				__( 'You are not allowed to edit this attachment.', 'wpsquoosh' ),
+				array( 'status' => 403 )
+			);
+		}
+		return true;
 	}
 
 	/**
@@ -204,13 +232,6 @@ class Rest {
 
 		$all = ! empty( $params['all'] );
 		if ( $all ) {
-			if ( ! current_user_can( 'manage_options' ) ) {
-				return new \WP_Error(
-					'wpsquoosh_forbidden',
-					__( 'La purge globale nécessite manage_options.', 'wpsquoosh' ),
-					array( 'status' => 403 )
-				);
-			}
 			return rest_ensure_response( Legacy_Cleanup::purge_all() );
 		}
 
@@ -220,7 +241,7 @@ class Rest {
 		}
 		$ids = array_values( array_filter( array_map( 'intval', $ids ) ) );
 		if ( empty( $ids ) ) {
-			return new \WP_Error( 'wpsquoosh_no_ids', __( 'Aucun ID fourni.', 'wpsquoosh' ), array( 'status' => 400 ) );
+			return new \WP_Error( 'wpsquoosh_no_ids', __( 'No IDs provided.', 'wpsquoosh' ), array( 'status' => 400 ) );
 		}
 
 		return rest_ensure_response( Legacy_Cleanup::purge_ids( $ids ) );
@@ -242,8 +263,10 @@ class Rest {
 		$mime = get_post_mime_type( $id );
 		$size = filesize( $path );
 		if ( false === $size ) {
-			return new \WP_Error( 'wpsquoosh_read', __( 'Lecture du fichier impossible.', 'wpsquoosh' ), array( 'status' => 500 ) );
+			return new \WP_Error( 'wpsquoosh_read', __( 'Unable to read the file.', 'wpsquoosh' ), array( 'status' => 500 ) );
 		}
+
+		$filename = sanitize_file_name( basename( $path ) );
 
 		$response = new \WP_REST_Response(
 			array(
@@ -253,7 +276,7 @@ class Rest {
 		);
 		$response->header( 'Content-Type', $mime ? $mime : 'application/octet-stream' );
 		$response->header( 'Content-Length', (string) $size );
-		$response->header( 'Content-Disposition', 'inline; filename="' . basename( $path ) . '"' );
+		$response->header( 'Content-Disposition', 'inline; filename="' . $filename . '"' );
 		$response->header( 'Cache-Control', 'no-store' );
 		return $response;
 	}
@@ -307,16 +330,25 @@ class Rest {
 
 		$files = $request->get_file_params();
 		if ( empty( $files['file'] ) ) {
-			return new \WP_Error( 'wpsquoosh_no_file', __( 'Paramètre file manquant.', 'wpsquoosh' ), array( 'status' => 400 ) );
+			return new \WP_Error( 'wpsquoosh_no_file', __( 'Missing file parameter.', 'wpsquoosh' ), array( 'status' => 400 ) );
 		}
 
 		$max = wp_max_upload_size();
 		if ( ! empty( $files['file']['size'] ) && (int) $files['file']['size'] > $max ) {
-			return new \WP_Error( 'wpsquoosh_too_large', __( 'Fichier trop volumineux.', 'wpsquoosh' ), array( 'status' => 413 ) );
+			return new \WP_Error( 'wpsquoosh_too_large', __( 'File too large.', 'wpsquoosh' ), array( 'status' => 413 ) );
 		}
 
 		$migrate_webp = filter_var( $request->get_param( 'migrate_webp' ), FILTER_VALIDATE_BOOLEAN );
 		$keep_legacy  = filter_var( $request->get_param( 'keep_legacy' ), FILTER_VALIDATE_BOOLEAN );
+
+		if ( ( $migrate_webp || $keep_legacy ) && ! current_user_can( 'manage_options' ) ) {
+			return new \WP_Error(
+				'wpsquoosh_forbidden',
+				__( 'WebP migration requires administrator privileges.', 'wpsquoosh' ),
+				array( 'status' => 403 )
+			);
+		}
+
 		if ( $migrate_webp ) {
 			$keep_legacy = true;
 		}
@@ -352,10 +384,7 @@ class Rest {
 			$settings = $settings_raw;
 		}
 
-		if ( $migrate_webp ) {
-			$settings['advanced_enabled'] = true;
-			$settings['convert_to']       = 'webp';
-		}
+		$settings = $this->sanitize_replace_settings( $settings, $migrate_webp );
 
 		$mime = $request->get_param( 'mime' );
 		if ( ! $mime && ! empty( $files['file']['type'] ) ) {
@@ -386,5 +415,43 @@ class Rest {
 		}
 
 		return rest_ensure_response( $result );
+	}
+
+	/**
+	 * Strip unauthorized advanced settings from a replace request.
+	 *
+	 * @param array<string, mixed> $settings Request settings.
+	 * @param bool                 $migrate_webp Migration flag.
+	 * @return array<string, mixed>
+	 */
+	private function sanitize_replace_settings( array $settings, $migrate_webp ) {
+		$stored       = Settings::get_all();
+		$can_advanced = current_user_can( 'manage_options' ) || ! empty( $stored['advanced_enabled'] );
+
+		if ( $migrate_webp ) {
+			$settings['advanced_enabled'] = true;
+			$settings['convert_to']       = 'webp';
+			$settings['max_width']        = 0;
+			$settings['max_height']       = 0;
+			return $settings;
+		}
+
+		if ( ! $can_advanced ) {
+			$settings['advanced_enabled'] = false;
+			$settings['convert_to']       = '';
+			$settings['max_width']        = 0;
+			$settings['max_height']       = 0;
+			return $settings;
+		}
+
+		if ( ! current_user_can( 'manage_options' ) ) {
+			// Non-admins may only use advanced options already enabled in stored settings.
+			$settings['advanced_enabled'] = ! empty( $stored['advanced_enabled'] );
+			$settings['convert_to']       = isset( $stored['convert_to'] ) ? (string) $stored['convert_to'] : '';
+			$settings['max_width']        = isset( $stored['max_width'] ) ? (int) $stored['max_width'] : 0;
+			$settings['max_height']       = isset( $stored['max_height'] ) ? (int) $stored['max_height'] : 0;
+		}
+
+		return $settings;
 	}
 }
