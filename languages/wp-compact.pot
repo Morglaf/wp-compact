@@ -1,25 +1,25 @@
 # Copyright (C) 2026 morglaf
-# This file is distributed under the same license as the WPsquoosh package.
+# This file is distributed under the same license as the wp-compact package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WPsquoosh 1.0.0\n"
+"Project-Id-Version: wp-compact 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-09 16:25+0000\n"
-"PO-Revision-Date: 2026-11-09 16:25+0000\n"
+"POT-Creation-Date: 2026-11-09 16:56+0000\n"
+"PO-Revision-Date: 2026-11-09 16:56+0000\n"
 "Last-Translator: morglaf\n"
 "Language-Team: English\n"
 "Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Domain: wpsquoosh\n"
+"X-Domain: wp-compact\n"
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh"
+msgid "wp-compact"
 msgstr ""
 
 #: admin/class-admin-page.php
-msgid "Compress (WPsquoosh)"
+msgid "Compress (wp-compact)"
 msgstr ""
 
 #: admin/class-admin-page.php
@@ -163,19 +163,19 @@ msgid "threshold"
 msgstr ""
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: %s not replaced (no savings, %s)."
+msgid "wp-compact: %s not replaced (no savings, %s)."
 msgstr ""
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: %1$s skipped (savings %2$s%% < %3$s%%)."
+msgid "wp-compact: %1$s skipped (savings %2$s%% < %3$s%%)."
 msgstr ""
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: %1$s %2$s%3$s → %4$s (−%5$s%%)."
+msgid "wp-compact: %1$s %2$s%3$s → %4$s (−%5$s%%)."
 msgstr ""
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: cannot read %s — uploading original without compression."
+msgid "wp-compact: cannot read %s — uploading original without compression."
 msgstr ""
 
 #: admin/class-admin-page.php
@@ -183,15 +183,15 @@ msgid "file"
 msgstr ""
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: compressing %d image(s)…"
+msgid "wp-compact: compressing %d image(s)…"
 msgstr ""
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: failed on %1$s (%2$s) — sending original."
+msgid "wp-compact: failed on %1$s (%2$s) — sending original."
 msgstr ""
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: %s"
+msgid "wp-compact: %s"
 msgstr ""
 
 #: admin/class-admin-page.php
@@ -199,7 +199,7 @@ msgid "Access denied."
 msgstr ""
 
 #: admin/views/page-batch.php
-msgid "WPsquoosh — Image compression"
+msgid "wp-compact — Image compression"
 msgstr ""
 
 #: admin/views/page-batch.php

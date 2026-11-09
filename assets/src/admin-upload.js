@@ -7,7 +7,7 @@ const SUPPORTED = ['image/jpeg', 'image/png', 'image/webp'];
 const readyBlobs = new WeakSet();
 
 function rawSettings() {
-	return window.wpSquooshConfig?.settings || {};
+	return window.wpCompactConfig?.settings || {};
 }
 
 /**
@@ -45,15 +45,15 @@ function workerSettings() {
 }
 
 function i18n(key, fallback = '') {
-	return window.wpSquooshConfig?.i18n?.[key] || fallback;
+	return window.wpCompactConfig?.i18n?.[key] || fallback;
 }
 
 function notice(text) {
-	let el = document.getElementById('wpsquoosh-upload-notice');
+	let el = document.getElementById('wp-compact-upload-notice');
 	if (!el) {
 		el = document.createElement('div');
-		el.id = 'wpsquoosh-upload-notice';
-		el.className = 'wpsquoosh-upload-notice notice notice-info inline';
+		el.id = 'wp-compact-upload-notice';
+		el.className = 'wp-compact-upload-notice notice notice-info inline';
 		const anchor =
 			document.querySelector('.media-frame-content') ||
 			document.querySelector('.media-modal .media-frame') ||
@@ -199,7 +199,7 @@ async function maybeCompressFile(file) {
 		if (newSize >= originalSize && !s.allow_larger) {
 			notice(
 				sprintf(
-					i18n('uploadNoGain', 'WPsquoosh: %s not replaced (no savings, %s).'),
+					i18n('uploadNoGain', 'wp-compact: %s not replaced (no savings, %s).'),
 					typed.name,
 					formatBytes(originalSize)
 				)
@@ -209,7 +209,7 @@ async function maybeCompressFile(file) {
 		if (savedPct < minSave && !s.allow_larger) {
 			notice(
 				sprintf(
-					i18n('uploadBelowMin', 'WPsquoosh: %1$s skipped (savings %2$s%% < %3$s%%).'),
+					i18n('uploadBelowMin', 'wp-compact: %1$s skipped (savings %2$s%% < %3$s%%).'),
 					typed.name,
 					savedPct.toFixed(1),
 					String(minSave)
@@ -228,7 +228,7 @@ async function maybeCompressFile(file) {
 	const modeLabel = mode === 'webp' && mime !== 'image/webp' ? '→ WebP ' : '';
 	notice(
 		sprintf(
-			i18n('uploadDone', 'WPsquoosh: %1$s %2$s%3$s → %4$s (−%5$s%%).'),
+			i18n('uploadDone', 'wp-compact: %1$s %2$s%3$s → %4$s (−%5$s%%).'),
 			typed.name,
 			modeLabel,
 			formatBytes(originalSize),
@@ -265,7 +265,7 @@ function stealAndRequeue(uploader, files) {
 				sprintf(
 					i18n(
 						'uploadUnreadable',
-						'WPsquoosh: cannot read %s — uploading original without compression.'
+						'wp-compact: cannot read %s — uploading original without compression.'
 					),
 					f.name || i18n('uploadFileFallback', 'file')
 				)
@@ -296,7 +296,7 @@ function stealAndRequeue(uploader, files) {
 
 	notice(
 		sprintf(
-			i18n('uploadCompressing', 'WPsquoosh: compressing %d image(s)…'),
+			i18n('uploadCompressing', 'wp-compact: compressing %d image(s)…'),
 			pending.length
 		)
 	);
@@ -321,7 +321,7 @@ function stealAndRequeue(uploader, files) {
 						sprintf(
 							i18n(
 								'uploadFailedItem',
-								'WPsquoosh: failed on %1$s (%2$s) — sending original.'
+								'wp-compact: failed on %1$s (%2$s) — sending original.'
 							),
 							item.plName,
 							err.message
@@ -336,7 +336,7 @@ function stealAndRequeue(uploader, files) {
 				}
 			}
 		} catch (err) {
-			notice(sprintf(i18n('uploadError', 'WPsquoosh: %s'), err.message));
+			notice(sprintf(i18n('uploadError', 'wp-compact: %s'), err.message));
 			for (const item of pending) {
 				readyBlobs.add(item.file);
 				try {
@@ -360,8 +360,8 @@ function stealAndRequeue(uploader, files) {
  * @param {object} up
  */
 function bindPluploadInstance(up) {
-	if (!up || up.__wpsquooshBound) return;
-	up.__wpsquooshBound = true;
+	if (!up || up.__wpCompactBound) return;
+	up.__wpCompactBound = true;
 
 	up.bind(
 		'FilesAdded',
@@ -428,8 +428,8 @@ function patchWpUploader() {
 	if (typeof window.wp === 'undefined' || !window.wp.Uploader) return false;
 
 	const proto = window.wp.Uploader.prototype;
-	if (!proto.__wpsquooshPatched) {
-		proto.__wpsquooshPatched = true;
+	if (!proto.__wpCompactPatched) {
+		proto.__wpCompactPatched = true;
 		const originalInit = proto.init;
 		proto.init = function patchedInit() {
 			originalInit.apply(this, arguments);
@@ -452,11 +452,11 @@ function patchUploaderWindow() {
 	}
 
 	const UW = wp.media.view.UploaderWindow;
-	if (UW.prototype.__wpsquooshPatched) return true;
-	UW.prototype.__wpsquooshPatched = true;
+	if (UW.prototype.__wpCompactPatched) return true;
+	UW.prototype.__wpCompactPatched = true;
 
 	const originalReady = UW.prototype.ready;
-	UW.prototype.ready = function wpsquooshReady() {
+	UW.prototype.ready = function wpCompactReady() {
 		const result = originalReady ? originalReady.apply(this, arguments) : undefined;
 		try {
 			if (this.uploader) {
@@ -478,8 +478,8 @@ function patchUploaderWindow() {
 }
 
 function patchInputFallback() {
-	if (document.documentElement.dataset.wpsquooshInputPatched === '1') return;
-	document.documentElement.dataset.wpsquooshInputPatched = '1';
+	if (document.documentElement.dataset.wpCompactInputPatched === '1') return;
+	document.documentElement.dataset.wpCompactInputPatched = '1';
 
 	document.addEventListener(
 		'change',
@@ -487,7 +487,7 @@ function patchInputFallback() {
 			const input = event.target;
 			if (!(input instanceof HTMLInputElement) || input.type !== 'file') return;
 			if (!input.files || !input.files.length) return;
-			if (input.dataset.wpsquooshHandled === '1') return;
+			if (input.dataset.wpCompactHandled === '1') return;
 			if (uploadMode() === 'off') return;
 
 			const list = Array.from(input.files);
@@ -524,14 +524,14 @@ function patchInputFallback() {
 						dt.items.add(file);
 					}
 				}
-				input.dataset.wpsquooshHandled = '1';
+				input.dataset.wpCompactHandled = '1';
 				input.files = dt.files;
 				input.dispatchEvent(new Event('change', { bubbles: true }));
 			} catch (err) {
-				notice(sprintf(i18n('uploadError', 'WPsquoosh: %s'), err.message));
+				notice(sprintf(i18n('uploadError', 'wp-compact: %s'), err.message));
 			} finally {
 				setTimeout(() => {
-					delete input.dataset.wpsquooshHandled;
+					delete input.dataset.wpCompactHandled;
 				}, 0);
 			}
 		},
@@ -543,8 +543,8 @@ function patchInputFallback() {
  * Re-bind whenever a media modal opens (featured image, gallery, etc.).
  */
 function watchMediaModalOpen() {
-	if (document.documentElement.dataset.wpsquooshModalWatch === '1') return;
-	document.documentElement.dataset.wpsquooshModalWatch = '1';
+	if (document.documentElement.dataset.wpCompactModalWatch === '1') return;
+	document.documentElement.dataset.wpCompactModalWatch = '1';
 
 	const observer = new MutationObserver(() => {
 		if (document.querySelector('.media-modal')) {

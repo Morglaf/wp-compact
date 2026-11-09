@@ -2,10 +2,10 @@
 /**
  * REST API.
  *
- * @package WPSquoosh
+ * @package WpCompact
  */
 
-namespace WPSquoosh;
+namespace WpCompact;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Rest {
 
-	const NAMESPACE = 'wpsquoosh/v1';
+	const NAMESPACE = 'wp-compact/v1';
 
 	/**
 	 * Register routes.
@@ -147,15 +147,15 @@ class Rest {
 		$id = (int) $request['id'];
 		if ( $id <= 0 || 'attachment' !== get_post_type( $id ) ) {
 			return new \WP_Error(
-				'wpsquoosh_forbidden',
-				__( 'Invalid attachment.', 'wpsquoosh' ),
+				'wp_compact_forbidden',
+				__( 'Invalid attachment.', 'wp-compact' ),
 				array( 'status' => 404 )
 			);
 		}
 		if ( ! current_user_can( 'edit_post', $id ) ) {
 			return new \WP_Error(
-				'wpsquoosh_forbidden',
-				__( 'You are not allowed to edit this attachment.', 'wpsquoosh' ),
+				'wp_compact_forbidden',
+				__( 'You are not allowed to edit this attachment.', 'wp-compact' ),
 				array( 'status' => 403 )
 			);
 		}
@@ -241,7 +241,7 @@ class Rest {
 		}
 		$ids = array_values( array_filter( array_map( 'intval', $ids ) ) );
 		if ( empty( $ids ) ) {
-			return new \WP_Error( 'wpsquoosh_no_ids', __( 'No IDs provided.', 'wpsquoosh' ), array( 'status' => 400 ) );
+			return new \WP_Error( 'wp_compact_no_ids', __( 'No IDs provided.', 'wp-compact' ), array( 'status' => 400 ) );
 		}
 
 		return rest_ensure_response( Legacy_Cleanup::purge_ids( $ids ) );
@@ -263,14 +263,14 @@ class Rest {
 		$mime = get_post_mime_type( $id );
 		$size = filesize( $path );
 		if ( false === $size ) {
-			return new \WP_Error( 'wpsquoosh_read', __( 'Unable to read the file.', 'wpsquoosh' ), array( 'status' => 500 ) );
+			return new \WP_Error( 'wp_compact_read', __( 'Unable to read the file.', 'wp-compact' ), array( 'status' => 500 ) );
 		}
 
 		$filename = sanitize_file_name( basename( $path ) );
 
 		$response = new \WP_REST_Response(
 			array(
-				'wpsquoosh_binary' => true,
+				'wp_compact_binary' => true,
 				'path'             => $path,
 			)
 		);
@@ -299,7 +299,7 @@ class Rest {
 		}
 
 		$data = $result->get_data();
-		if ( ! is_array( $data ) || empty( $data['wpsquoosh_binary'] ) || empty( $data['path'] ) ) {
+		if ( ! is_array( $data ) || empty( $data['wp_compact_binary'] ) || empty( $data['path'] ) ) {
 			return $served;
 		}
 
@@ -330,12 +330,12 @@ class Rest {
 
 		$files = $request->get_file_params();
 		if ( empty( $files['file'] ) ) {
-			return new \WP_Error( 'wpsquoosh_no_file', __( 'Missing file parameter.', 'wpsquoosh' ), array( 'status' => 400 ) );
+			return new \WP_Error( 'wp_compact_no_file', __( 'Missing file parameter.', 'wp-compact' ), array( 'status' => 400 ) );
 		}
 
 		$max = wp_max_upload_size();
 		if ( ! empty( $files['file']['size'] ) && (int) $files['file']['size'] > $max ) {
-			return new \WP_Error( 'wpsquoosh_too_large', __( 'File too large.', 'wpsquoosh' ), array( 'status' => 413 ) );
+			return new \WP_Error( 'wp_compact_too_large', __( 'File too large.', 'wp-compact' ), array( 'status' => 413 ) );
 		}
 
 		$migrate_webp = filter_var( $request->get_param( 'migrate_webp' ), FILTER_VALIDATE_BOOLEAN );
@@ -343,8 +343,8 @@ class Rest {
 
 		if ( ( $migrate_webp || $keep_legacy ) && ! current_user_can( 'manage_options' ) ) {
 			return new \WP_Error(
-				'wpsquoosh_forbidden',
-				__( 'WebP migration requires administrator privileges.', 'wpsquoosh' ),
+				'wp_compact_forbidden',
+				__( 'WebP migration requires administrator privileges.', 'wp-compact' ),
 				array( 'status' => 403 )
 			);
 		}
@@ -409,7 +409,7 @@ class Rest {
 		);
 
 		if ( is_wp_error( $result ) ) {
-			$status = 'wpsquoosh_no_gain' === $result->get_error_code() ? 422 : 400;
+			$status = 'wp_compact_no_gain' === $result->get_error_code() ? 422 : 400;
 			$result->add_data( array( 'status' => $status ) );
 			return $result;
 		}

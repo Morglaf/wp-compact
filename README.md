@@ -1,4 +1,4 @@
-# WPsquoosh
+# wp-compact
 
 WordPress plugin that compresses Media Library images **in the browser** (WebAssembly / [jSquash](https://github.com/jamsinclair/jSquash), codecs derived from [Squoosh](https://github.com/GoogleChromeLabs/squoosh)). Images are not sent to a third-party server: only the compressed file is posted back to WordPress via the REST API.
 
@@ -29,10 +29,10 @@ English (source), Français (`fr_FR`), Español (`es_ES`), Deutsch (`de_DE`).
 
 ## Installation
 
-1. Copy the plugin folder to `wp-content/plugins/wpsquoosh`  
-   (or install `wpsquoosh.zip`; the inner folder must be named `wpsquoosh`).
-2. Activate **WPsquoosh**.
-3. Open **Media → Compress (WPsquoosh)** (administrators).
+1. Copy the plugin folder to `wp-content/plugins/wp-compact`  
+   (or install `wp-compact.zip`; the inner folder must be named `wp-compact`).
+2. Activate **wp-compact**.
+3. Open **Media → Compress (wp-compact)** (administrators).
 
 ## Development
 
@@ -45,7 +45,7 @@ Watch mode: `npm run watch`.
 
 On Windows, local helpers (gitignored):
 
-- `build-zip.ps1` — builds assets and writes `dist/wpsquoosh.zip` (no `node_modules` / JS sources)
+- `build-zip.ps1` — builds assets and writes `dist/wp-compact.zip` (no `node_modules` / JS sources)
 - `release.ps1` — if the git tree is clean, builds the zip, tags `vX.Y.Z` from the plugin header, pushes, and creates a GitHub Release with the zip (`gh` required)
 
 Directory assets (icons/banners) live in `.wordpress-org/` and are not part of the plugin zip.

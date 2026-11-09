@@ -2,10 +2,10 @@
 /**
  * Legacy file cleanup after WebP migration.
  *
- * @package WPSquoosh
+ * @package WpCompact
  */
 
-namespace WPSquoosh;
+namespace WpCompact;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -36,7 +36,7 @@ class Legacy_Cleanup {
 				'fields'         => 'ids',
 				'meta_query'     => array(
 					array(
-						'key'   => '_wpsquoosh_pending_cleanup',
+						'key'   => '_wp_compact_pending_cleanup',
 						'value' => '1',
 					),
 				),
@@ -87,7 +87,7 @@ class Legacy_Cleanup {
 				'no_found_rows'  => true,
 				'meta_query'     => array(
 					array(
-						'key'   => '_wpsquoosh_pending_cleanup',
+						'key'   => '_wp_compact_pending_cleanup',
 						'value' => '1',
 					),
 				),
@@ -111,7 +111,7 @@ class Legacy_Cleanup {
 	 * @return array<string, mixed>|null
 	 */
 	public static function item( $attachment_id ) {
-		if ( ! get_post_meta( $attachment_id, '_wpsquoosh_pending_cleanup', true ) ) {
+		if ( ! get_post_meta( $attachment_id, '_wp_compact_pending_cleanup', true ) ) {
 			return null;
 		}
 
@@ -143,7 +143,7 @@ class Legacy_Cleanup {
 	 * @return string[]
 	 */
 	public static function legacy_absolute_paths( $attachment_id ) {
-		$raw = get_post_meta( $attachment_id, '_wpsquoosh_legacy_files', true );
+		$raw = get_post_meta( $attachment_id, '_wp_compact_legacy_files', true );
 		$rel = array();
 		if ( is_string( $raw ) && $raw !== '' ) {
 			$decoded = json_decode( $raw, true );
@@ -215,8 +215,8 @@ class Legacy_Cleanup {
 				++$files_deleted;
 				$bytes_freed += $size;
 			}
-			delete_post_meta( $id, '_wpsquoosh_legacy_files' );
-			delete_post_meta( $id, '_wpsquoosh_pending_cleanup' );
+			delete_post_meta( $id, '_wp_compact_legacy_files' );
+			delete_post_meta( $id, '_wp_compact_pending_cleanup' );
 			++$purged;
 		}
 
@@ -238,7 +238,7 @@ class Legacy_Cleanup {
 				'no_found_rows'  => true,
 				'meta_query'     => array(
 					array(
-						'key'   => '_wpsquoosh_pending_cleanup',
+						'key'   => '_wp_compact_pending_cleanup',
 						'value' => '1',
 					),
 				),

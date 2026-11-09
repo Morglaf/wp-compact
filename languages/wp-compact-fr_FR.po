@@ -1,26 +1,26 @@
 # Copyright (C) 2026 morglaf
-# This file is distributed under the same license as the WPsquoosh package.
+# This file is distributed under the same license as the wp-compact package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WPsquoosh 1.0.0\n"
+"Project-Id-Version: wp-compact 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-09 16:25+0000\n"
-"PO-Revision-Date: 2026-11-09 16:25+0000\n"
+"POT-Creation-Date: 2026-11-09 16:56+0000\n"
+"PO-Revision-Date: 2026-11-09 16:56+0000\n"
 "Last-Translator: morglaf\n"
 "Language-Team: French\n"
 "Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Domain: wpsquoosh\n"
+"X-Domain: wp-compact\n"
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh"
-msgstr "WPsquoosh"
+msgid "wp-compact"
+msgstr "wp-compact"
 
 #: admin/class-admin-page.php
-msgid "Compress (WPsquoosh)"
-msgstr "Compresser (WPsquoosh)"
+msgid "Compress (wp-compact)"
+msgstr "Compresser (wp-compact)"
 
 #: admin/class-admin-page.php
 msgid "Advanced mode can change format or dimensions and break themes / CSS / hardcoded URLs."
@@ -163,44 +163,44 @@ msgid "threshold"
 msgstr "seuil"
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: %s not replaced (no savings, %s)."
-msgstr "WPsquoosh: %s non remplacé (pas de gain, %s)."
+msgid "wp-compact: %s not replaced (no savings, %s)."
+msgstr "wp-compact: %s non remplacé (pas de gain, %s)."
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: %1$s skipped (savings %2$s%% < %3$s%%)."
-msgstr "WPsquoosh: %1$s ignoré (gain %2$s%% < %3$s%%)."
+msgid "wp-compact: %1$s skipped (savings %2$s%% < %3$s%%)."
+msgstr "wp-compact: %1$s ignoré (gain %2$s%% < %3$s%%)."
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: %1$s %2$s%3$s → %4$s (−%5$s%%)."
-msgstr "WPsquoosh: %1$s %2$s%3$s → %4$s (−%5$s%%)."
+msgid "wp-compact: %1$s %2$s%3$s → %4$s (−%5$s%%)."
+msgstr "wp-compact: %1$s %2$s%3$s → %4$s (−%5$s%%)."
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: cannot read %s — uploading original without compression."
-msgstr "WPsquoosh: lecture impossible pour %s — upload original sans compression."
+msgid "wp-compact: cannot read %s — uploading original without compression."
+msgstr "wp-compact: lecture impossible pour %s — upload original sans compression."
 
 #: admin/class-admin-page.php
 msgid "file"
 msgstr "fichier"
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: compressing %d image(s)…"
-msgstr "WPsquoosh: compression de %d image(s)…"
+msgid "wp-compact: compressing %d image(s)…"
+msgstr "wp-compact: compression de %d image(s)…"
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: failed on %1$s (%2$s) — sending original."
-msgstr "WPsquoosh: échec sur %1$s (%2$s) — envoi de l’original."
+msgid "wp-compact: failed on %1$s (%2$s) — sending original."
+msgstr "wp-compact: échec sur %1$s (%2$s) — envoi de l’original."
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: %s"
-msgstr "WPsquoosh: %s"
+msgid "wp-compact: %s"
+msgstr "wp-compact: %s"
 
 #: admin/class-admin-page.php
 msgid "Access denied."
 msgstr "Accès refusé."
 
 #: admin/views/page-batch.php
-msgid "WPsquoosh — Image compression"
-msgstr "WPsquoosh — Compression d’images"
+msgid "wp-compact — Image compression"
+msgstr "wp-compact — Compression d’images"
 
 #: admin/views/page-batch.php
 msgid "Compression runs in your browser (WebAssembly). Images are not sent to a third-party server."

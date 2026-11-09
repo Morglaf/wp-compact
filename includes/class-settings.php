@@ -2,10 +2,10 @@
 /**
  * Plugin settings.
  *
- * @package WPSquoosh
+ * @package WpCompact
  */
 
-namespace WPSquoosh;
+namespace WpCompact;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Settings {
 
-	const OPTION_KEY = 'wpsquoosh_settings';
+	const OPTION_KEY = 'wp_compact_settings';
 
 	/**
 	 * Default settings.

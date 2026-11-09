@@ -2,10 +2,10 @@
 /**
  * Attachment queries and file replacement.
  *
- * @package WPSquoosh
+ * @package WpCompact
  */
 
-namespace WPSquoosh;
+namespace WpCompact;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -88,7 +88,7 @@ class Attachments {
 			if ( $path && file_exists( $path ) ) {
 				$bytes += (int) filesize( $path );
 			}
-			if ( get_post_meta( (int) $id, '_wpsquoosh_optimized', true ) ) {
+			if ( get_post_meta( (int) $id, '_wp_compact_optimized', true ) ) {
 				++$optimized;
 			}
 		}
@@ -122,7 +122,7 @@ class Attachments {
 		$height = isset( $meta['height'] ) ? (int) $meta['height'] : 0;
 		$size   = (int) filesize( $path );
 
-		$hash_done = (string) get_post_meta( $attachment_id, '_wpsquoosh_settings_hash', true );
+		$hash_done = (string) get_post_meta( $attachment_id, '_wp_compact_settings_hash', true );
 		$current   = Settings::settings_hash();
 
 		return array(
@@ -133,13 +133,13 @@ class Attachments {
 			'width'             => $width,
 			'height'            => $height,
 			'filesize'          => $size,
-			'already_optimized' => (bool) get_post_meta( $attachment_id, '_wpsquoosh_optimized', true ),
+			'already_optimized' => (bool) get_post_meta( $attachment_id, '_wp_compact_optimized', true ),
 			'same_settings'     => ( $hash_done && $hash_done === $current ),
-			'optimized_at'      => get_post_meta( $attachment_id, '_wpsquoosh_optimized_at', true ),
-			'original_size'     => (int) get_post_meta( $attachment_id, '_wpsquoosh_original_size', true ),
-			'compressed_size'   => (int) get_post_meta( $attachment_id, '_wpsquoosh_compressed_size', true ),
-			'backup_path'       => get_post_meta( $attachment_id, '_wpsquoosh_backup_path', true ),
-			'pending_cleanup'   => (bool) get_post_meta( $attachment_id, '_wpsquoosh_pending_cleanup', true ),
+			'optimized_at'      => get_post_meta( $attachment_id, '_wp_compact_optimized_at', true ),
+			'original_size'     => (int) get_post_meta( $attachment_id, '_wp_compact_original_size', true ),
+			'compressed_size'   => (int) get_post_meta( $attachment_id, '_wp_compact_compressed_size', true ),
+			'backup_path'       => get_post_meta( $attachment_id, '_wp_compact_backup_path', true ),
+			'pending_cleanup'   => (bool) get_post_meta( $attachment_id, '_wp_compact_pending_cleanup', true ),
 		);
 	}
 
@@ -152,11 +152,11 @@ class Attachments {
 	public static function file_path( $attachment_id ) {
 		$path = get_attached_file( $attachment_id );
 		if ( ! $path || ! file_exists( $path ) ) {
-			return new \WP_Error( 'wpsquoosh_missing_file', __( 'File not found.', 'wpsquoosh' ) );
+			return new \WP_Error( 'wp_compact_missing_file', __( 'File not found.', 'wp-compact' ) );
 		}
 		$mime = get_post_mime_type( $attachment_id );
 		if ( ! in_array( $mime, self::supported_mimes(), true ) ) {
-			return new \WP_Error( 'wpsquoosh_unsupported', __( 'Unsupported MIME type.', 'wpsquoosh' ) );
+			return new \WP_Error( 'wp_compact_unsupported', __( 'Unsupported MIME type.', 'wp-compact' ) );
 		}
 		return $path;
 	}
@@ -227,7 +227,7 @@ class Attachments {
 		}
 
 		if ( empty( $file['tmp_name'] ) || ! is_uploaded_file( $file['tmp_name'] ) ) {
-			return new \WP_Error( 'wpsquoosh_no_upload', __( 'No compressed file received.', 'wpsquoosh' ) );
+			return new \WP_Error( 'wp_compact_no_upload', __( 'No compressed file received.', 'wp-compact' ) );
 		}
 
 		$migrate_webp = ! empty( $args['migrate_webp'] );
@@ -238,23 +238,23 @@ class Attachments {
 		$allow_larger  = ! empty( $args['allow_larger'] ) || $migrate_webp;
 
 		if ( $new_size <= 0 ) {
-			return new \WP_Error( 'wpsquoosh_empty', __( 'Compressed file is empty.', 'wpsquoosh' ) );
+			return new \WP_Error( 'wp_compact_empty', __( 'Compressed file is empty.', 'wp-compact' ) );
 		}
 
 		if ( ! $allow_larger && $new_size >= $original_size ) {
 			return new \WP_Error(
-				'wpsquoosh_no_gain',
-				__( 'Compressed file is not smaller; replacement cancelled.', 'wpsquoosh' ),
+				'wp_compact_no_gain',
+				__( 'Compressed file is not smaller; replacement cancelled.', 'wp-compact' ),
 				array( 'original_size' => $original_size, 'new_size' => $new_size )
 			);
 		}
 
 		$detected_mime = wp_get_image_mime( $file['tmp_name'] );
 		if ( ! $detected_mime || ! in_array( $detected_mime, self::supported_mimes(), true ) ) {
-			return new \WP_Error( 'wpsquoosh_unsupported', __( 'Uploaded file MIME type is not supported.', 'wpsquoosh' ) );
+			return new \WP_Error( 'wp_compact_unsupported', __( 'Uploaded file MIME type is not supported.', 'wp-compact' ) );
 		}
 		if ( $migrate_webp && 'image/webp' !== $detected_mime ) {
-			return new \WP_Error( 'wpsquoosh_unsupported', __( 'WebP migration requires a WebP file.', 'wpsquoosh' ) );
+			return new \WP_Error( 'wp_compact_unsupported', __( 'WebP migration requires a WebP file.', 'wp-compact' ) );
 		}
 
 		$backup_path = null;
@@ -313,7 +313,7 @@ class Attachments {
 			}
 
 			if ( ! move_uploaded_file( $file['tmp_name'], $new_path ) ) {
-				return new \WP_Error( 'wpsquoosh_move', __( 'Unable to write the compressed file.', 'wpsquoosh' ) );
+				return new \WP_Error( 'wp_compact_move', __( 'Unable to write the compressed file.', 'wp-compact' ) );
 			}
 
 			if ( ! $keep_legacy && realpath( $new_path ) !== realpath( $path ) && file_exists( $path ) ) {
@@ -332,7 +332,7 @@ class Attachments {
 			if ( ! move_uploaded_file( $file['tmp_name'], $target_path ) ) {
 				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_copy
 				if ( ! copy( $file['tmp_name'], $target_path ) ) {
-					return new \WP_Error( 'wpsquoosh_move', __( 'Unable to write the compressed file.', 'wpsquoosh' ) );
+					return new \WP_Error( 'wp_compact_move', __( 'Unable to write the compressed file.', 'wp-compact' ) );
 				}
 				// phpcs:ignore WordPress.WP.AlternativeFunctions.unlink_unlink
 				@unlink( $file['tmp_name'] );
@@ -363,12 +363,12 @@ class Attachments {
 		$settings_hash = Settings::settings_hash( $settings );
 		$final_size    = file_exists( $target_path ) ? (int) filesize( $target_path ) : $new_size;
 
-		update_post_meta( $attachment_id, '_wpsquoosh_optimized', 1 );
-		update_post_meta( $attachment_id, '_wpsquoosh_optimized_at', gmdate( 'c' ) );
-		update_post_meta( $attachment_id, '_wpsquoosh_original_size', $original_size );
-		update_post_meta( $attachment_id, '_wpsquoosh_compressed_size', $final_size );
-		update_post_meta( $attachment_id, '_wpsquoosh_settings_hash', $settings_hash );
-		update_post_meta( $attachment_id, '_wpsquoosh_settings', wp_json_encode( $settings ) );
+		update_post_meta( $attachment_id, '_wp_compact_optimized', 1 );
+		update_post_meta( $attachment_id, '_wp_compact_optimized_at', gmdate( 'c' ) );
+		update_post_meta( $attachment_id, '_wp_compact_original_size', $original_size );
+		update_post_meta( $attachment_id, '_wp_compact_compressed_size', $final_size );
+		update_post_meta( $attachment_id, '_wp_compact_settings_hash', $settings_hash );
+		update_post_meta( $attachment_id, '_wp_compact_settings', wp_json_encode( $settings ) );
 
 		$urls_updated = 0;
 		$url_map      = array();
@@ -395,7 +395,7 @@ class Attachments {
 
 			$legacy_rel = self::to_relative_uploads_paths( $legacy_only );
 			// Merge with any previous legacy list.
-			$prev = get_post_meta( $attachment_id, '_wpsquoosh_legacy_files', true );
+			$prev = get_post_meta( $attachment_id, '_wp_compact_legacy_files', true );
 			if ( is_string( $prev ) && $prev !== '' ) {
 				$decoded = json_decode( $prev, true );
 				if ( is_array( $decoded ) ) {
@@ -403,8 +403,8 @@ class Attachments {
 				}
 			}
 
-			update_post_meta( $attachment_id, '_wpsquoosh_legacy_files', wp_json_encode( $legacy_rel ) );
-			update_post_meta( $attachment_id, '_wpsquoosh_pending_cleanup', 1 );
+			update_post_meta( $attachment_id, '_wp_compact_legacy_files', wp_json_encode( $legacy_rel ) );
+			update_post_meta( $attachment_id, '_wp_compact_pending_cleanup', 1 );
 		}
 
 		if ( $migrate_webp && $url_snapshot_before ) {
@@ -412,7 +412,7 @@ class Attachments {
 			if ( ! empty( $url_map ) ) {
 				$rewrite      = Url_Rewriter::apply_map( $url_map );
 				$urls_updated = isset( $rewrite['replacements'] ) ? (int) $rewrite['replacements'] : 0;
-				update_post_meta( $attachment_id, '_wpsquoosh_url_map', wp_json_encode( $url_map ) );
+				update_post_meta( $attachment_id, '_wp_compact_url_map', wp_json_encode( $url_map ) );
 			}
 		}
 
@@ -426,8 +426,8 @@ class Attachments {
 			'backup_path'      => $backup_path,
 			'mime'             => get_post_mime_type( $attachment_id ),
 			'url'              => wp_get_attachment_url( $attachment_id ),
-			'pending_cleanup'  => (bool) get_post_meta( $attachment_id, '_wpsquoosh_pending_cleanup', true ),
-			'legacy_files'     => json_decode( (string) get_post_meta( $attachment_id, '_wpsquoosh_legacy_files', true ), true ) ?: array(),
+			'pending_cleanup'  => (bool) get_post_meta( $attachment_id, '_wp_compact_pending_cleanup', true ),
+			'legacy_files'     => json_decode( (string) get_post_meta( $attachment_id, '_wp_compact_legacy_files', true ), true ) ?: array(),
 			'urls_updated'     => $urls_updated,
 			'url_map'          => $url_map,
 		);

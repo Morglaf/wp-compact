@@ -2,10 +2,10 @@
 /**
  * Main plugin bootstrap.
  *
- * @package WPSquoosh
+ * @package WpCompact
  */
 
-namespace WPSquoosh;
+namespace WpCompact;
 
 defined( 'ABSPATH' ) || exit;
 

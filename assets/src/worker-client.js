@@ -8,7 +8,7 @@ let seq = 0;
 const pending = new Map();
 
 function getConfig() {
-	return window.wpSquooshConfig || {};
+	return window.wpCompactConfig || {};
 }
 
 function ensureWorker() {

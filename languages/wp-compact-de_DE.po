@@ -1,158 +1,158 @@
 # Copyright (C) 2026 morglaf
-# This file is distributed under the same license as the WPsquoosh package.
+# This file is distributed under the same license as the wp-compact package.
 msgid ""
 msgstr ""
-"Project-Id-Version: WPsquoosh 1.0.0\n"
+"Project-Id-Version: wp-compact 1.0.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-09 16:25+0000\n"
-"PO-Revision-Date: 2026-11-09 16:25+0000\n"
+"POT-Creation-Date: 2026-11-09 16:56+0000\n"
+"PO-Revision-Date: 2026-11-09 16:56+0000\n"
 "Last-Translator: morglaf\n"
-"Language-Team: Spanish\n"
-"Language: es_ES\n"
+"Language-Team: German\n"
+"Language: de_DE\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Domain: wpsquoosh\n"
+"X-Domain: wp-compact\n"
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh"
-msgstr "WPsquoosh"
+msgid "wp-compact"
+msgstr "wp-compact"
 
 #: admin/class-admin-page.php
-msgid "Compress (WPsquoosh)"
-msgstr "Comprimir (WPsquoosh)"
+msgid "Compress (wp-compact)"
+msgstr "Komprimieren (wp-compact)"
 
 #: admin/class-admin-page.php
 msgid "Advanced mode can change format or dimensions and break themes / CSS / hardcoded URLs."
-msgstr "El modo avanzado puede cambiar el formato o las dimensiones y romper temas / CSS / URLs fijas."
+msgstr "Der erweiterte Modus kann Format oder Abmessungen ändern und Themes / CSS / fest codierte URLs beschädigen."
 
 #: admin/class-admin-page.php
 msgid "Compressing…"
-msgstr "Comprimiendo…"
+msgstr "Komprimieren…"
 
 #: admin/class-admin-page.php
 msgid "Done"
-msgstr "Listo"
+msgstr "Fertig"
 
 #: admin/class-admin-page.php
 msgid "Skipped"
-msgstr "Omitido"
+msgstr "Übersprungen"
 
 #: admin/class-admin-page.php
 msgid "Error"
-msgstr "Error"
+msgstr "Fehler"
 
 #: admin/class-admin-page.php
 msgid "Stopped."
-msgstr "Detenido."
+msgstr "Gestoppt."
 
 #: admin/class-admin-page.php
 msgid "Migrate the entire Media Library to WebP and rewrite links in the database? Previous files will be kept until cleanup."
-msgstr "¿Migrar toda la biblioteca de medios a WebP y reescribir los enlaces en la base de datos? Los archivos anteriores se conservarán hasta la limpieza."
+msgstr "Gesamte Mediathek nach WebP migrieren und Links in der Datenbank umschreiben? Vorherige Dateien bleiben bis zur Bereinigung erhalten."
 
 #: admin/class-admin-page.php
 msgid "Permanently delete the selected legacy files?"
-msgstr "¿Eliminar definitivamente los archivos legacy seleccionados?"
+msgstr "Ausgewählte Legacy-Dateien endgültig löschen?"
 
 #: admin/class-admin-page.php
 msgid "Purge ALL tagged legacy files? This cannot be undone."
-msgstr "¿Purgar TODOS los archivos legacy etiquetados? Acción irreversible."
+msgstr "ALLE markierten Legacy-Dateien löschen? Dies kann nicht rückgängig gemacht werden."
 
 #: admin/class-admin-page.php
 msgid "Settings saved."
-msgstr "Ajustes guardados."
+msgstr "Einstellungen gespeichert."
 
 #: admin/class-admin-page.php
 msgid "Save failed"
-msgstr "Error al guardar"
+msgstr "Speichern fehlgeschlagen"
 
 #: admin/class-admin-page.php
 msgid "Stats"
-msgstr "Estadísticas"
+msgstr "Statistik"
 
 #: admin/class-admin-page.php
 msgid "images"
-msgstr "imágenes"
+msgstr "Bilder"
 
 #: admin/class-admin-page.php
 msgid "already compressed"
-msgstr "ya comprimidas"
+msgstr "bereits komprimiert"
 
 #: admin/class-admin-page.php
 msgid "same settings"
-msgstr "mismos ajustes"
+msgstr "gleiche Einstellungen"
 
 #: admin/class-admin-page.php
 msgid "already WebP"
-msgstr "ya WebP"
+msgstr "bereits WebP"
 
 #: admin/class-admin-page.php
 msgid "no savings"
-msgstr "sin ahorro"
+msgstr "keine Einsparung"
 
 #: admin/class-admin-page.php
 msgid "Loading Media Library…"
-msgstr "Cargando la biblioteca de medios…"
+msgstr "Mediathek wird geladen…"
 
 #: admin/class-admin-page.php
 msgid "WebP migration: loading Media Library…"
-msgstr "Migración WebP: cargando biblioteca de medios…"
+msgstr "WebP-Migration: Mediathek wird geladen…"
 
 #: admin/class-admin-page.php
 msgid "image(s) to process."
-msgstr "imagen(es) a procesar."
+msgstr "Bild(er) zu verarbeiten."
 
 #: admin/class-admin-page.php
 msgid "Failed"
-msgstr "Error"
+msgstr "Fehlgeschlagen"
 
 #: admin/class-admin-page.php
 msgid "skipped"
-msgstr "omitido"
+msgstr "übersprungen"
 
 #: admin/class-admin-page.php
 msgid "DB replacements"
-msgstr "reemplazos en BD"
+msgstr "DB-Ersetzungen"
 
 #: admin/class-admin-page.php
 msgid "legacy tagged"
-msgstr "legacy etiquetado(s)"
+msgstr "Legacy markiert"
 
 #: admin/class-admin-page.php
 msgid "to clean"
-msgstr "por limpiar"
+msgstr "zu bereinigen"
 
 #: admin/class-admin-page.php
 msgid "No tagged legacy files."
-msgstr "No hay archivos legacy etiquetados."
+msgstr "Keine markierten Legacy-Dateien."
 
 #: admin/class-admin-page.php
 msgid "Nothing selected to purge."
-msgstr "Nada seleccionado para purgar."
+msgstr "Nichts zum Löschen ausgewählt."
 
 #: admin/class-admin-page.php
 msgid "Full purge is limited to administrators."
-msgstr "La purga completa está limitada a administradores."
+msgstr "Vollständige Bereinigung ist Administratoren vorbehalten."
 
 #: admin/class-admin-page.php
 msgid "Purge"
-msgstr "Purga"
+msgstr "Bereinigung"
 
 #: admin/class-admin-page.php
 msgid "Full purge"
-msgstr "Purga total"
+msgstr "Vollständige Bereinigung"
 
 #: admin/class-admin-page.php
 msgid "media items"
-msgstr "elementos multimedia"
+msgstr "Medienelemente"
 
 #: admin/class-admin-page.php
 msgid "files"
-msgstr "archivos"
+msgstr "Dateien"
 
 #: admin/class-admin-page.php
 msgid "freed"
-msgstr "liberados"
+msgstr "freigegeben"
 
 #: admin/class-admin-page.php
 msgid "Worker"
@@ -160,175 +160,175 @@ msgstr "Worker"
 
 #: admin/class-admin-page.php
 msgid "threshold"
-msgstr "umbral"
+msgstr "Schwelle"
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: %s not replaced (no savings, %s)."
-msgstr "WPsquoosh: %s no reemplazado (sin ahorro, %s)."
+msgid "wp-compact: %s not replaced (no savings, %s)."
+msgstr "wp-compact: %s nicht ersetzt (keine Einsparung, %s)."
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: %1$s skipped (savings %2$s%% < %3$s%%)."
-msgstr "WPsquoosh: %1$s omitido (ahorro %2$s%% < %3$s%%)."
+msgid "wp-compact: %1$s skipped (savings %2$s%% < %3$s%%)."
+msgstr "wp-compact: %1$s übersprungen (Einsparung %2$s%% < %3$s%%)."
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: %1$s %2$s%3$s → %4$s (−%5$s%%)."
-msgstr "WPsquoosh: %1$s %2$s%3$s → %4$s (−%5$s%%)."
+msgid "wp-compact: %1$s %2$s%3$s → %4$s (−%5$s%%)."
+msgstr "wp-compact: %1$s %2$s%3$s → %4$s (−%5$s%%)."
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: cannot read %s — uploading original without compression."
-msgstr "WPsquoosh: no se puede leer %s — subiendo el original sin compresión."
+msgid "wp-compact: cannot read %s — uploading original without compression."
+msgstr "wp-compact: %s kann nicht gelesen werden — Original ohne Kompression wird hochgeladen."
 
 #: admin/class-admin-page.php
 msgid "file"
-msgstr "archivo"
+msgstr "Datei"
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: compressing %d image(s)…"
-msgstr "WPsquoosh: comprimiendo %d imagen(es)…"
+msgid "wp-compact: compressing %d image(s)…"
+msgstr "wp-compact: %d Bild(er) werden komprimiert…"
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: failed on %1$s (%2$s) — sending original."
-msgstr "WPsquoosh: error en %1$s (%2$s) — enviando el original."
+msgid "wp-compact: failed on %1$s (%2$s) — sending original."
+msgstr "wp-compact: Fehler bei %1$s (%2$s) — Original wird gesendet."
 
 #: admin/class-admin-page.php
-msgid "WPsquoosh: %s"
-msgstr "WPsquoosh: %s"
+msgid "wp-compact: %s"
+msgstr "wp-compact: %s"
 
 #: admin/class-admin-page.php
 msgid "Access denied."
-msgstr "Acceso denegado."
+msgstr "Zugriff verweigert."
 
 #: admin/views/page-batch.php
-msgid "WPsquoosh — Image compression"
-msgstr "WPsquoosh — Compresión de imágenes"
+msgid "wp-compact — Image compression"
+msgstr "wp-compact — Bildkompression"
 
 #: admin/views/page-batch.php
 msgid "Compression runs in your browser (WebAssembly). Images are not sent to a third-party server."
-msgstr "La compresión se ejecuta en su navegador (WebAssembly). Las imágenes no se envían a un servidor de terceros."
+msgstr "Die Kompression läuft in Ihrem Browser (WebAssembly). Bilder werden nicht an einen Drittanbieter-Server gesendet."
 
 #: admin/views/page-batch.php
 msgid "Settings (safe mode)"
-msgstr "Ajustes (modo seguro)"
+msgstr "Einstellungen (sicherer Modus)"
 
 #: admin/views/page-batch.php
 msgid "JPEG quality"
-msgstr "Calidad JPEG"
+msgstr "JPEG-Qualität"
 
 #: admin/views/page-batch.php
 msgid "WebP quality"
-msgstr "Calidad WebP"
+msgstr "WebP-Qualität"
 
 #: admin/views/page-batch.php
 msgid "Oxipng level (0–6)"
-msgstr "Nivel Oxipng (0–6)"
+msgstr "Oxipng-Stufe (0–6)"
 
 #: admin/views/page-batch.php
 msgid "Minimum savings (%)"
-msgstr "Ahorro mínimo (%)"
+msgstr "Mindesteinsparung (%)"
 
 #: admin/views/page-batch.php
 msgid "Concurrency"
-msgstr "Concurrencia"
+msgstr "Parallelität"
 
 #: admin/views/page-batch.php
 msgid "Create a backup before replacing"
-msgstr "Crear una copia de seguridad antes de reemplazar"
+msgstr "Vor dem Ersetzen ein Backup erstellen"
 
 #: admin/views/page-batch.php
 msgid "On image upload"
-msgstr "Al subir imágenes"
+msgstr "Beim Hochladen von Bildern"
 
 #: admin/views/page-batch.php
 msgid "Disabled"
-msgstr "Desactivado"
+msgstr "Deaktiviert"
 
 #: admin/views/page-batch.php
 msgid "Compress only (same format)"
-msgstr "Solo comprimir (mismo formato)"
+msgstr "Nur komprimieren (gleiches Format)"
 
 #: admin/views/page-batch.php
 msgid "Convert to WebP"
-msgstr "Convertir a WebP"
+msgstr "Nach WebP konvertieren"
 
 #: admin/views/page-batch.php
 msgid "Allow a larger file (not recommended)"
-msgstr "Permitir un archivo más grande (no recomendado)"
+msgstr "Größere Datei erlauben (nicht empfohlen)"
 
 #: admin/views/page-batch.php
 msgid "Advanced mode (risky)"
-msgstr "Modo avanzado (arriesgado)"
+msgstr "Erweiterter Modus (riskant)"
 
 #: admin/views/page-batch.php
 msgid "Changing format or dimensions can break the site (themes, CSS, hardcoded URLs). Use only if you know what you are doing."
-msgstr "Cambiar el formato o las dimensiones puede romper el sitio (temas, CSS, URLs). Úselo solo si sabe lo que hace."
+msgstr "Format- oder Größenänderungen können die Website beschädigen (Themes, CSS, URLs). Nur verwenden, wenn Sie wissen, was Sie tun."
 
 #: admin/views/page-batch.php
 msgid "Enable advanced mode for this job"
-msgstr "Activar el modo avanzado para este trabajo"
+msgstr "Erweiterten Modus für diesen Auftrag aktivieren"
 
 #: admin/views/page-batch.php
 msgid "Max width (0 = keep)"
-msgstr "Ancho máx. (0 = mantener)"
+msgstr "Max. Breite (0 = behalten)"
 
 #: admin/views/page-batch.php
 msgid "Max height (0 = keep)"
-msgstr "Alto máx. (0 = mantener)"
+msgstr "Max. Höhe (0 = behalten)"
 
 #: admin/views/page-batch.php
 msgid "Convert to"
-msgstr "Convertir a"
+msgstr "Konvertieren nach"
 
 #: admin/views/page-batch.php
 msgid "None (keep format)"
-msgstr "Ninguno (mantener formato)"
+msgstr "Keines (Format behalten)"
 
 #: admin/views/page-batch.php
 msgid "AVIF quality (0–63 legacy → mapped to %)"
-msgstr "Calidad AVIF (0–63 legacy → mapeado a %)"
+msgstr "AVIF-Qualität (0–63 Legacy → als % abgebildet)"
 
 #: admin/views/page-batch.php
 msgid "Save settings"
-msgstr "Guardar ajustes"
+msgstr "Einstellungen speichern"
 
 #: admin/views/page-batch.php
 msgid "Compress entire Media Library"
-msgstr "Comprimir toda la biblioteca de medios"
+msgstr "Gesamte Mediathek komprimieren"
 
 #: admin/views/page-batch.php
 msgid "Migrate to WebP + update links"
-msgstr "Migrar a WebP + actualizar enlaces"
+msgstr "Nach WebP migrieren + Links aktualisieren"
 
 #: admin/views/page-batch.php
 msgid "Stop"
-msgstr "Detener"
+msgstr "Stoppen"
 
 #: admin/views/page-batch.php
 msgid "Migration converts to WebP, rewrites URLs in the database, and keeps previous files tagged for later cleanup."
-msgstr "La migración convierte a WebP, reescribe las URLs en la base de datos y conserva los archivos anteriores etiquetados para una limpieza posterior."
+msgstr "Die Migration konvertiert nach WebP, schreibt URLs in der Datenbank um und behält vorherige Dateien für spätere Bereinigung markiert."
 
 #: admin/views/page-batch.php
 msgid "Progress"
-msgstr "Progreso"
+msgstr "Fortschritt"
 
 #: admin/views/page-batch.php
 msgid "Legacy file cleanup"
-msgstr "Limpieza de archivos legacy"
+msgstr "Bereinigung von Legacy-Dateien"
 
 #: admin/views/page-batch.php
 msgid "After a WebP migration, previous JPG/PNG files (and thumbnails) remain on disk. Review the site, then purge them here."
-msgstr "Tras una migración WebP, los JPG/PNG anteriores (y miniaturas) permanecen en el disco. Revise el sitio y luego purgue aquí."
+msgstr "Nach einer WebP-Migration bleiben vorherige JPG/PNG-Dateien (und Miniaturen) auf der Festplatte. Prüfen Sie die Website und bereinigen Sie sie hier."
 
 #: admin/views/page-batch.php
 msgid "Refresh"
-msgstr "Actualizar"
+msgstr "Aktualisieren"
 
 #: admin/views/page-batch.php
 msgid "Delete selected"
-msgstr "Eliminar selección"
+msgstr "Auswahl löschen"
 
 #: admin/views/page-batch.php
 msgid "Purge all"
-msgstr "Purgar todo"
+msgstr "Alles bereinigen"
 
 #: admin/views/page-batch.php
 msgid "ID"
@@ -336,88 +336,88 @@ msgstr "ID"
 
 #: admin/views/page-batch.php
 msgid "Title"
-msgstr "Título"
+msgstr "Titel"
 
 #: admin/views/page-batch.php
 msgid "Files"
-msgstr "Archivos"
+msgstr "Dateien"
 
 #: admin/views/page-batch.php
 msgid "Size"
-msgstr "Tamaño"
+msgstr "Größe"
 
 #: admin/views/page-batch.php
 msgid "Loading…"
-msgstr "Cargando…"
+msgstr "Laden…"
 
 #: includes/class-attachments.php
 msgid "File not found."
-msgstr "Archivo no encontrado."
+msgstr "Datei nicht gefunden."
 
 #: includes/class-attachments.php
 msgid "Unsupported MIME type."
-msgstr "Tipo MIME no admitido."
+msgstr "Nicht unterstützter MIME-Typ."
 
 #: includes/class-attachments.php
 msgid "No compressed file received."
-msgstr "No se recibió ningún archivo comprimido."
+msgstr "Keine komprimierte Datei empfangen."
 
 #: includes/class-attachments.php
 msgid "Compressed file is empty."
-msgstr "El archivo comprimido está vacío."
+msgstr "Komprimierte Datei ist leer."
 
 #: includes/class-attachments.php
 msgid "Compressed file is not smaller; replacement cancelled."
-msgstr "El archivo comprimido no es más pequeño; reemplazo cancelado."
+msgstr "Komprimierte Datei ist nicht kleiner; Ersetzung abgebrochen."
 
 #: includes/class-attachments.php
 msgid "Uploaded file MIME type is not supported."
-msgstr "El tipo MIME del archivo subido no es compatible."
+msgstr "MIME-Typ der hochgeladenen Datei wird nicht unterstützt."
 
 #: includes/class-attachments.php
 msgid "WebP migration requires a WebP file."
-msgstr "La migración WebP requiere un archivo WebP."
+msgstr "WebP-Migration erfordert eine WebP-Datei."
 
 #: includes/class-attachments.php
 msgid "Unable to write the compressed file."
-msgstr "No se puede escribir el archivo comprimido."
+msgstr "Komprimierte Datei konnte nicht geschrieben werden."
 
 #: includes/class-backup.php
 msgid "Unable to create the backup folder."
-msgstr "No se puede crear la carpeta de copia de seguridad."
+msgstr "Backup-Ordner konnte nicht erstellt werden."
 
 #: includes/class-backup.php
 msgid "Backup source file not found."
-msgstr "No se encuentra el archivo de origen para la copia de seguridad."
+msgstr "Backup-Quelldatei nicht gefunden."
 
 #: includes/class-backup.php
 msgid "Backup copy failed."
-msgstr "Error al copiar la copia de seguridad."
+msgstr "Backup-Kopie fehlgeschlagen."
 
 #: includes/class-rest.php
 msgid "Invalid attachment."
-msgstr "Adjunto no válido."
+msgstr "Ungültiger Anhang."
 
 #: includes/class-rest.php
 msgid "You are not allowed to edit this attachment."
-msgstr "No tiene permiso para editar este adjunto."
+msgstr "Sie dürfen diesen Anhang nicht bearbeiten."
 
 #: includes/class-rest.php
 msgid "No IDs provided."
-msgstr "No se proporcionaron IDs."
+msgstr "Keine IDs angegeben."
 
 #: includes/class-rest.php
 msgid "Unable to read the file."
-msgstr "No se puede leer el archivo."
+msgstr "Datei konnte nicht gelesen werden."
 
 #: includes/class-rest.php
 msgid "Missing file parameter."
-msgstr "Falta el parámetro file."
+msgstr "Datei-Parameter fehlt."
 
 #: includes/class-rest.php
 msgid "File too large."
-msgstr "Archivo demasiado grande."
+msgstr "Datei zu groß."
 
 #: includes/class-rest.php
 msgid "WebP migration requires administrator privileges."
-msgstr "La migración WebP requiere privilegios de administrador."
+msgstr "WebP-Migration erfordert Administratorrechte."

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Extract strings and build pot/po/mo for WPsquoosh."""
+"""Extract strings and build pot/po/mo for wp-compact."""
 
 from __future__ import annotations
 
@@ -12,19 +12,19 @@ from collections import OrderedDict
 ROOT = pathlib.Path(__file__).resolve().parents[1]
 LANG = ROOT / "languages"
 PAT = re.compile(
-    r"(?:__|esc_html__|_e|esc_attr__)\(\s*'((?:\\'|[^'])*)'\s*,\s*'wpsquoosh'\s*\)"
+    r"(?:__|esc_html__|_e|esc_attr__)\(\s*'((?:\\'|[^'])*)'\s*,\s*'wp-compact'\s*\)"
 )
 
 T = {
-    "WPsquoosh": {
-        "fr": "WPsquoosh",
-        "es": "WPsquoosh",
-        "de": "WPsquoosh",
+    "wp-compact": {
+        "fr": "wp-compact",
+        "es": "wp-compact",
+        "de": "wp-compact",
     },
-    "Compress (WPsquoosh)": {
-        "fr": "Compresser (WPsquoosh)",
-        "es": "Comprimir (WPsquoosh)",
-        "de": "Komprimieren (WPsquoosh)",
+    "Compress (wp-compact)": {
+        "fr": "Compresser (wp-compact)",
+        "es": "Comprimir (wp-compact)",
+        "de": "Komprimieren (wp-compact)",
     },
     "Advanced mode can change format or dimensions and break themes / CSS / hardcoded URLs.": {
         "fr": "Le mode avancé peut changer le format ou les dimensions et casser des thèmes / CSS / URLs hardcodées.",
@@ -125,47 +125,47 @@ T = {
     "freed": {"fr": "libérés", "es": "liberados", "de": "freigegeben"},
     "Worker": {"fr": "Worker", "es": "Worker", "de": "Worker"},
     "threshold": {"fr": "seuil", "es": "umbral", "de": "Schwelle"},
-    "WPsquoosh: %s not replaced (no savings, %s).": {
-        "fr": "WPsquoosh: %s non remplacé (pas de gain, %s).",
-        "es": "WPsquoosh: %s no reemplazado (sin ahorro, %s).",
-        "de": "WPsquoosh: %s nicht ersetzt (keine Einsparung, %s).",
+    "wp-compact: %s not replaced (no savings, %s).": {
+        "fr": "wp-compact: %s non remplacé (pas de gain, %s).",
+        "es": "wp-compact: %s no reemplazado (sin ahorro, %s).",
+        "de": "wp-compact: %s nicht ersetzt (keine Einsparung, %s).",
     },
-    "WPsquoosh: %1$s skipped (savings %2$s%% < %3$s%%).": {
-        "fr": "WPsquoosh: %1$s ignoré (gain %2$s%% < %3$s%%).",
-        "es": "WPsquoosh: %1$s omitido (ahorro %2$s%% < %3$s%%).",
-        "de": "WPsquoosh: %1$s übersprungen (Einsparung %2$s%% < %3$s%%).",
+    "wp-compact: %1$s skipped (savings %2$s%% < %3$s%%).": {
+        "fr": "wp-compact: %1$s ignoré (gain %2$s%% < %3$s%%).",
+        "es": "wp-compact: %1$s omitido (ahorro %2$s%% < %3$s%%).",
+        "de": "wp-compact: %1$s übersprungen (Einsparung %2$s%% < %3$s%%).",
     },
-    "WPsquoosh: %1$s %2$s%3$s → %4$s (−%5$s%%).": {
-        "fr": "WPsquoosh: %1$s %2$s%3$s → %4$s (−%5$s%%).",
-        "es": "WPsquoosh: %1$s %2$s%3$s → %4$s (−%5$s%%).",
-        "de": "WPsquoosh: %1$s %2$s%3$s → %4$s (−%5$s%%).",
+    "wp-compact: %1$s %2$s%3$s → %4$s (−%5$s%%).": {
+        "fr": "wp-compact: %1$s %2$s%3$s → %4$s (−%5$s%%).",
+        "es": "wp-compact: %1$s %2$s%3$s → %4$s (−%5$s%%).",
+        "de": "wp-compact: %1$s %2$s%3$s → %4$s (−%5$s%%).",
     },
-    "WPsquoosh: cannot read %s — uploading original without compression.": {
-        "fr": "WPsquoosh: lecture impossible pour %s — upload original sans compression.",
-        "es": "WPsquoosh: no se puede leer %s — subiendo el original sin compresión.",
-        "de": "WPsquoosh: %s kann nicht gelesen werden — Original ohne Kompression wird hochgeladen.",
+    "wp-compact: cannot read %s — uploading original without compression.": {
+        "fr": "wp-compact: lecture impossible pour %s — upload original sans compression.",
+        "es": "wp-compact: no se puede leer %s — subiendo el original sin compresión.",
+        "de": "wp-compact: %s kann nicht gelesen werden — Original ohne Kompression wird hochgeladen.",
     },
     "file": {"fr": "fichier", "es": "archivo", "de": "Datei"},
-    "WPsquoosh: compressing %d image(s)…": {
-        "fr": "WPsquoosh: compression de %d image(s)…",
-        "es": "WPsquoosh: comprimiendo %d imagen(es)…",
-        "de": "WPsquoosh: %d Bild(er) werden komprimiert…",
+    "wp-compact: compressing %d image(s)…": {
+        "fr": "wp-compact: compression de %d image(s)…",
+        "es": "wp-compact: comprimiendo %d imagen(es)…",
+        "de": "wp-compact: %d Bild(er) werden komprimiert…",
     },
-    "WPsquoosh: failed on %1$s (%2$s) — sending original.": {
-        "fr": "WPsquoosh: échec sur %1$s (%2$s) — envoi de l’original.",
-        "es": "WPsquoosh: error en %1$s (%2$s) — enviando el original.",
-        "de": "WPsquoosh: Fehler bei %1$s (%2$s) — Original wird gesendet.",
+    "wp-compact: failed on %1$s (%2$s) — sending original.": {
+        "fr": "wp-compact: échec sur %1$s (%2$s) — envoi de l’original.",
+        "es": "wp-compact: error en %1$s (%2$s) — enviando el original.",
+        "de": "wp-compact: Fehler bei %1$s (%2$s) — Original wird gesendet.",
     },
-    "WPsquoosh: %s": {"fr": "WPsquoosh: %s", "es": "WPsquoosh: %s", "de": "WPsquoosh: %s"},
+    "wp-compact: %s": {"fr": "wp-compact: %s", "es": "wp-compact: %s", "de": "wp-compact: %s"},
     "Access denied.": {
         "fr": "Accès refusé.",
         "es": "Acceso denegado.",
         "de": "Zugriff verweigert.",
     },
-    "WPsquoosh — Image compression": {
-        "fr": "WPsquoosh — Compression d’images",
-        "es": "WPsquoosh — Compresión de imágenes",
-        "de": "WPsquoosh — Bildkompression",
+    "wp-compact — Image compression": {
+        "fr": "wp-compact — Compression d’images",
+        "es": "wp-compact — Compresión de imágenes",
+        "de": "wp-compact — Bildkompression",
     },
     "Compression runs in your browser (WebAssembly). Images are not sent to a third-party server.": {
         "fr": "La compression s’exécute dans votre navigateur (WebAssembly). Les images ne sont pas envoyées à un serveur tiers.",
@@ -416,10 +416,10 @@ def write_po(
     now = datetime.datetime.utcnow().strftime("%Y-%m-%d %H:%M+0000")
     lines = [
         "# Copyright (C) 2026 morglaf",
-        "# This file is distributed under the same license as the WPsquoosh package.",
+        "# This file is distributed under the same license as the wp-compact package.",
         'msgid ""',
         'msgstr ""',
-        '"Project-Id-Version: WPsquoosh 1.0.0\\n"',
+        '"Project-Id-Version: wp-compact 1.0.0\\n"',
         '"Report-Msgid-Bugs-To: \\n"',
         f'"POT-Creation-Date: {now}\\n"',
         f'"PO-Revision-Date: {now}\\n"',
@@ -429,7 +429,7 @@ def write_po(
         '"MIME-Version: 1.0\\n"',
         '"Content-Type: text/plain; charset=UTF-8\\n"',
         '"Content-Transfer-Encoding: 8bit\\n"',
-        '"X-Domain: wpsquoosh\\n"',
+        '"X-Domain: wp-compact\\n"',
         "",
     ]
     for msgid, rel in strings.items():
@@ -454,12 +454,12 @@ def main() -> None:
         raise SystemExit(1)
 
     LANG.mkdir(exist_ok=True)
-    write_po(LANG / "wpsquoosh.pot", "en", "English", strings, None)
-    write_po(LANG / "wpsquoosh-fr_FR.po", "fr_FR", "French", strings, "fr")
-    write_po(LANG / "wpsquoosh-es_ES.po", "es_ES", "Spanish", strings, "es")
-    write_po(LANG / "wpsquoosh-de_DE.po", "de_DE", "German", strings, "de")
+    write_po(LANG / "wp-compact.pot", "en", "English", strings, None)
+    write_po(LANG / "wp-compact-fr_FR.po", "fr_FR", "French", strings, "fr")
+    write_po(LANG / "wp-compact-es_ES.po", "es_ES", "Spanish", strings, "es")
+    write_po(LANG / "wp-compact-de_DE.po", "de_DE", "German", strings, "de")
 
-    for po_name in ("wpsquoosh-fr_FR.po", "wpsquoosh-es_ES.po", "wpsquoosh-de_DE.po"):
+    for po_name in ("wp-compact-fr_FR.po", "wp-compact-es_ES.po", "wp-compact-de_DE.po"):
         mo_name = po_name.replace(".po", ".mo")
         result = subprocess.run(
             ["msgfmt", "-o", str(LANG / mo_name), str(LANG / po_name)],

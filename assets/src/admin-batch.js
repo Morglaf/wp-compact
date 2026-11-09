@@ -14,7 +14,7 @@ const state = {
 	running: false,
 	stop: false,
 	mode: 'compress', // compress | migrate
-	settings: { ...(window.wpSquooshConfig?.settings || {}) },
+	settings: { ...(window.wpCompactConfig?.settings || {}) },
 };
 
 function $(sel) {
@@ -22,11 +22,11 @@ function $(sel) {
 }
 
 function i18n(key, fallback = '') {
-	return window.wpSquooshConfig?.i18n?.[key] || fallback;
+	return window.wpCompactConfig?.i18n?.[key] || fallback;
 }
 
 function readFormSettings() {
-	const form = $('#wpsquoosh-settings-form');
+	const form = $('#wp-compact-settings-form');
 	const fd = new FormData(form);
 	const bool = (name) => fd.get(name) === '1' || fd.get(name) === 'on';
 
@@ -68,7 +68,7 @@ function migrateSettings(base) {
 }
 
 function log(message, cls = '') {
-	const ul = $('#wpsquoosh-log');
+	const ul = $('#wp-compact-log');
 	const li = document.createElement('li');
 	if (cls) li.className = cls;
 	li.textContent = message;
@@ -77,21 +77,21 @@ function log(message, cls = '') {
 
 function setProgress(done, total) {
 	const pct = total > 0 ? Math.round((done / total) * 100) : 0;
-	$('#wpsquoosh-progress-bar').style.width = `${pct}%`;
-	$('#wpsquoosh-progress-text').textContent = `${done} / ${total} (${pct}%)`;
+	$('#wp-compact-progress-bar').style.width = `${pct}%`;
+	$('#wp-compact-progress-text').textContent = `${done} / ${total} (${pct}%)`;
 }
 
 function setRunningUi(running) {
 	state.running = running;
-	$('#wpsquoosh-start').disabled = running;
-	$('#wpsquoosh-migrate-webp').disabled = running;
-	$('#wpsquoosh-stop').disabled = !running;
+	$('#wp-compact-start').disabled = running;
+	$('#wp-compact-migrate-webp').disabled = running;
+	$('#wp-compact-stop').disabled = !running;
 }
 
 async function refreshStats() {
 	try {
 		const stats = await fetchStats();
-		const root = $('#wpsquoosh-stats');
+		const root = $('#wp-compact-stats');
 		root.querySelector('[data-stat="total"]').textContent = `${stats.total} ${i18n('images', 'images')}`;
 		root.querySelector('[data-stat="optimized"]').textContent =
 			`${stats.optimized} ${i18n('alreadyCompressed', 'already compressed')}`;
@@ -213,7 +213,7 @@ async function onSave() {
 	const settings = readFormSettings();
 	try {
 		state.settings = await saveSettings(settings);
-		window.wpSquooshConfig.settings = state.settings;
+		window.wpCompactConfig.settings = state.settings;
 		log(i18n('settingsSaved', 'Settings saved.'), 'is-ok');
 	} catch (err) {
 		log(`${i18n('saveFailed', 'Save failed')}: ${err.message}`, 'is-error');
@@ -273,15 +273,15 @@ async function runJob(migrate) {
 
 function onStop() {
 	state.stop = true;
-	$('#wpsquoosh-stop').disabled = true;
+	$('#wp-compact-stop').disabled = true;
 }
 
 async function refreshLegacy() {
-	const tbody = $('#wpsquoosh-legacy-tbody');
+	const tbody = $('#wp-compact-legacy-tbody');
 	if (!tbody) return;
 	try {
 		const data = await fetchLegacyPage(1, 100);
-		const root = $('#wpsquoosh-legacy-stats');
+		const root = $('#wp-compact-legacy-stats');
 		root.querySelector('[data-legacy="total"]').textContent =
 			`${data.total} ${i18n('toClean', 'to clean')}`;
 		root.querySelector('[data-legacy="bytes"]').textContent = formatBytes(data.bytes);
@@ -294,7 +294,7 @@ async function refreshLegacy() {
 		tbody.innerHTML = data.items
 			.map(
 				(it) => `<tr>
-					<th scope="row" class="check-column"><input type="checkbox" class="wpsquoosh-legacy-check" value="${it.id}" /></th>
+					<th scope="row" class="check-column"><input type="checkbox" class="wp-compact-legacy-check" value="${it.id}" /></th>
 					<td>${it.id}</td>
 					<td>${escapeHtml(it.title || '')}</td>
 					<td>${it.file_count}</td>
@@ -316,7 +316,7 @@ function escapeHtml(str) {
 }
 
 function selectedLegacyIds() {
-	return Array.from(document.querySelectorAll('.wpsquoosh-legacy-check:checked')).map((el) =>
+	return Array.from(document.querySelectorAll('.wp-compact-legacy-check:checked')).map((el) =>
 		Number(el.value)
 	);
 }
@@ -347,7 +347,7 @@ async function onPurgeSelected() {
 }
 
 async function onPurgeAll() {
-	if (!window.wpSquooshConfig?.canManage) {
+	if (!window.wpCompactConfig?.canManage) {
 		log(i18n('purgeAdminOnly', 'Full purge is limited to administrators.'), 'is-error');
 		return;
 	}
@@ -371,16 +371,16 @@ async function onPurgeAll() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-	$('#wpsquoosh-save-settings')?.addEventListener('click', onSave);
-	$('#wpsquoosh-start')?.addEventListener('click', () => runJob(false));
-	$('#wpsquoosh-migrate-webp')?.addEventListener('click', () => runJob(true));
-	$('#wpsquoosh-stop')?.addEventListener('click', onStop);
-	$('#wpsquoosh-legacy-refresh')?.addEventListener('click', refreshLegacy);
-	$('#wpsquoosh-legacy-purge-selected')?.addEventListener('click', onPurgeSelected);
-	$('#wpsquoosh-legacy-purge-all')?.addEventListener('click', onPurgeAll);
-	$('#wpsquoosh-legacy-check-all')?.addEventListener('change', (e) => {
+	$('#wp-compact-save-settings')?.addEventListener('click', onSave);
+	$('#wp-compact-start')?.addEventListener('click', () => runJob(false));
+	$('#wp-compact-migrate-webp')?.addEventListener('click', () => runJob(true));
+	$('#wp-compact-stop')?.addEventListener('click', onStop);
+	$('#wp-compact-legacy-refresh')?.addEventListener('click', refreshLegacy);
+	$('#wp-compact-legacy-purge-selected')?.addEventListener('click', onPurgeSelected);
+	$('#wp-compact-legacy-purge-all')?.addEventListener('click', onPurgeAll);
+	$('#wp-compact-legacy-check-all')?.addEventListener('change', (e) => {
 		const on = e.target.checked;
-		document.querySelectorAll('.wpsquoosh-legacy-check').forEach((el) => {
+		document.querySelectorAll('.wp-compact-legacy-check').forEach((el) => {
 			el.checked = on;
 		});
 	});

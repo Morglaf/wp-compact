@@ -1,4 +1,4 @@
-=== WPsquoosh ===
+=== wp-compact ===
 Contributors: morglaf
 Tags: images, compression, webp, media library, optimization
 Requires at least: 6.0
@@ -12,7 +12,7 @@ Compress Media Library images in your browser with Squoosh-derived WASM codecs. 
 
 == Description ==
 
-WPsquoosh compresses WordPress Media Library images **in the browser** using WebAssembly codecs derived from [Squoosh](https://github.com/GoogleChromeLabs/squoosh) via [jSquash](https://github.com/jamsinclair/jSquash). Images are not sent to a third-party server; only the compressed file is posted back to your WordPress site through the REST API.
+wp-compact compresses WordPress Media Library images **in the browser** using WebAssembly codecs derived from [Squoosh](https://github.com/GoogleChromeLabs/squoosh) via [jSquash](https://github.com/jamsinclair/jSquash). Images are not sent to a third-party server; only the compressed file is posted back to your WordPress site through the REST API.
 
 **Features**
 
@@ -29,13 +29,13 @@ English (source), Français, Español, Deutsch.
 
 **Trademark notice**
 
-WPsquoosh is an independent plugin and is **not** affiliated with, endorsed by, or sponsored by Google or the Squoosh project. “Squoosh” refers to the open-source image compression project whose codecs are used under compatible licenses.
+wp-compact is an independent plugin and is **not** affiliated with, endorsed by, or sponsored by Google or the Squoosh project. “Squoosh” refers to the open-source image compression project whose codecs are used under compatible licenses.
 
 == Installation ==
 
-1. Upload the `wpsquoosh` folder to `/wp-content/plugins/`, or install the zip from the Plugins screen.
-2. Activate **WPsquoosh** through the Plugins menu.
-3. Open **Media → Compress (WPsquoosh)** (administrators) to configure settings and run batch jobs.
+1. Upload the `wp-compact` folder to `/wp-content/plugins/`, or install the zip from the Plugins screen.
+2. Activate **wp-compact** through the Plugins menu.
+3. Open **Media → Compress (wp-compact)** (administrators) to configure settings and run batch jobs.
 4. Upload compression follows the saved settings whenever a user with upload capability adds images.
 
 == Frequently Asked Questions ==

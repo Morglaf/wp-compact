@@ -2,11 +2,11 @@
 /**
  * Uninstall cleanup.
  *
- * @package WPSquoosh
+ * @package WpCompact
  */
 
 defined( 'WP_UNINSTALL_PLUGIN' ) || exit;
 
-delete_option( 'wpsquoosh_settings' );
+delete_option( 'wp_compact_settings' );
 
 // Leave backup files on disk intentionally (user data).

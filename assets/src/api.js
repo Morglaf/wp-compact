@@ -1,5 +1,5 @@
 function cfg() {
-	return window.wpSquooshConfig || {};
+	return window.wpCompactConfig || {};
 }
 
 function headers(json = false) {

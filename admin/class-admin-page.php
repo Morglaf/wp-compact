@@ -2,10 +2,10 @@
 /**
  * Admin UI.
  *
- * @package WPSquoosh
+ * @package WpCompact
  */
 
-namespace WPSquoosh;
+namespace WpCompact;
 
 defined( 'ABSPATH' ) || exit;
 
@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) || exit;
  */
 class Admin_Page {
 
-	const PAGE_SLUG = 'wpsquoosh';
+	const PAGE_SLUG = 'wp-compact';
 
 	/**
 	 * Hooks.
@@ -30,8 +30,8 @@ class Admin_Page {
 	 */
 	public function register_menu() {
 		add_media_page(
-			__( 'WPsquoosh', 'wpsquoosh' ),
-			__( 'Compress (WPsquoosh)', 'wpsquoosh' ),
+			__( 'wp-compact', 'wp-compact' ),
+			__( 'Compress (wp-compact)', 'wp-compact' ),
 			'manage_options',
 			self::PAGE_SLUG,
 			array( $this, 'render_page' )
@@ -49,62 +49,62 @@ class Admin_Page {
 			'restUrl'   => esc_url_raw( rest_url( Rest::NAMESPACE ) ),
 			'nonce'     => wp_create_nonce( 'wp_rest' ),
 			'settings'  => $settings,
-			'pluginUrl' => WPSQUOOSH_URL,
-			'wasmUrl'   => WPSQUOOSH_URL . 'assets/dist/wasm/',
-			'workerUrl' => WPSQUOOSH_URL . 'assets/dist/compress-worker.js',
+			'pluginUrl' => WP_COMPACT_URL,
+			'wasmUrl'   => WP_COMPACT_URL . 'assets/dist/wasm/',
+			'workerUrl' => WP_COMPACT_URL . 'assets/dist/compress-worker.js',
 			'canManage' => current_user_can( 'manage_options' ),
 			'i18n'      => array(
-				'advancedWarning'     => __( 'Advanced mode can change format or dimensions and break themes / CSS / hardcoded URLs.', 'wpsquoosh' ),
-				'compressing'         => __( 'Compressing…', 'wpsquoosh' ),
-				'done'                => __( 'Done', 'wpsquoosh' ),
-				'skipped'             => __( 'Skipped', 'wpsquoosh' ),
-				'error'               => __( 'Error', 'wpsquoosh' ),
-				'stopped'             => __( 'Stopped.', 'wpsquoosh' ),
-				'uploadBadge'         => __( 'WPsquoosh', 'wpsquoosh' ),
-				'migrateConfirm'      => __( 'Migrate the entire Media Library to WebP and rewrite links in the database? Previous files will be kept until cleanup.', 'wpsquoosh' ),
-				'purgeConfirm'        => __( 'Permanently delete the selected legacy files?', 'wpsquoosh' ),
-				'purgeAllConfirm'     => __( 'Purge ALL tagged legacy files? This cannot be undone.', 'wpsquoosh' ),
-				'settingsSaved'       => __( 'Settings saved.', 'wpsquoosh' ),
-				'saveFailed'          => __( 'Save failed', 'wpsquoosh' ),
-				'statsFailed'         => __( 'Stats', 'wpsquoosh' ),
-				'images'              => __( 'images', 'wpsquoosh' ),
-				'alreadyCompressed'   => __( 'already compressed', 'wpsquoosh' ),
-				'sameSettings'        => __( 'same settings', 'wpsquoosh' ),
-				'alreadyWebp'         => __( 'already WebP', 'wpsquoosh' ),
-				'noGain'              => __( 'no savings', 'wpsquoosh' ),
-				'loadingLibrary'      => __( 'Loading Media Library…', 'wpsquoosh' ),
-				'loadingMigrate'      => __( 'WebP migration: loading Media Library…', 'wpsquoosh' ),
-				'imagesToProcess'     => __( 'image(s) to process.', 'wpsquoosh' ),
-				'jobFailed'           => __( 'Failed', 'wpsquoosh' ),
-				'ignored'             => __( 'skipped', 'wpsquoosh' ),
-				'dbReplacements'      => __( 'DB replacements', 'wpsquoosh' ),
-				'legacyTagged'        => __( 'legacy tagged', 'wpsquoosh' ),
-				'toClean'             => __( 'to clean', 'wpsquoosh' ),
-				'noLegacy'            => __( 'No tagged legacy files.', 'wpsquoosh' ),
-				'noSelection'         => __( 'Nothing selected to purge.', 'wpsquoosh' ),
-				'purgeAdminOnly'      => __( 'Full purge is limited to administrators.', 'wpsquoosh' ),
-				'purgeSummary'        => __( 'Purge', 'wpsquoosh' ),
-				'purgeTotalSummary'   => __( 'Full purge', 'wpsquoosh' ),
-				'mediaItems'          => __( 'media items', 'wpsquoosh' ),
-				'filesDeleted'        => __( 'files', 'wpsquoosh' ),
-				'freed'               => __( 'freed', 'wpsquoosh' ),
-				'workerFailed'        => __( 'Worker', 'wpsquoosh' ),
-				'threshold'           => __( 'threshold', 'wpsquoosh' ),
+				'advancedWarning'     => __( 'Advanced mode can change format or dimensions and break themes / CSS / hardcoded URLs.', 'wp-compact' ),
+				'compressing'         => __( 'Compressing…', 'wp-compact' ),
+				'done'                => __( 'Done', 'wp-compact' ),
+				'skipped'             => __( 'Skipped', 'wp-compact' ),
+				'error'               => __( 'Error', 'wp-compact' ),
+				'stopped'             => __( 'Stopped.', 'wp-compact' ),
+				'uploadBadge'         => __( 'wp-compact', 'wp-compact' ),
+				'migrateConfirm'      => __( 'Migrate the entire Media Library to WebP and rewrite links in the database? Previous files will be kept until cleanup.', 'wp-compact' ),
+				'purgeConfirm'        => __( 'Permanently delete the selected legacy files?', 'wp-compact' ),
+				'purgeAllConfirm'     => __( 'Purge ALL tagged legacy files? This cannot be undone.', 'wp-compact' ),
+				'settingsSaved'       => __( 'Settings saved.', 'wp-compact' ),
+				'saveFailed'          => __( 'Save failed', 'wp-compact' ),
+				'statsFailed'         => __( 'Stats', 'wp-compact' ),
+				'images'              => __( 'images', 'wp-compact' ),
+				'alreadyCompressed'   => __( 'already compressed', 'wp-compact' ),
+				'sameSettings'        => __( 'same settings', 'wp-compact' ),
+				'alreadyWebp'         => __( 'already WebP', 'wp-compact' ),
+				'noGain'              => __( 'no savings', 'wp-compact' ),
+				'loadingLibrary'      => __( 'Loading Media Library…', 'wp-compact' ),
+				'loadingMigrate'      => __( 'WebP migration: loading Media Library…', 'wp-compact' ),
+				'imagesToProcess'     => __( 'image(s) to process.', 'wp-compact' ),
+				'jobFailed'           => __( 'Failed', 'wp-compact' ),
+				'ignored'             => __( 'skipped', 'wp-compact' ),
+				'dbReplacements'      => __( 'DB replacements', 'wp-compact' ),
+				'legacyTagged'        => __( 'legacy tagged', 'wp-compact' ),
+				'toClean'             => __( 'to clean', 'wp-compact' ),
+				'noLegacy'            => __( 'No tagged legacy files.', 'wp-compact' ),
+				'noSelection'         => __( 'Nothing selected to purge.', 'wp-compact' ),
+				'purgeAdminOnly'      => __( 'Full purge is limited to administrators.', 'wp-compact' ),
+				'purgeSummary'        => __( 'Purge', 'wp-compact' ),
+				'purgeTotalSummary'   => __( 'Full purge', 'wp-compact' ),
+				'mediaItems'          => __( 'media items', 'wp-compact' ),
+				'filesDeleted'        => __( 'files', 'wp-compact' ),
+				'freed'               => __( 'freed', 'wp-compact' ),
+				'workerFailed'        => __( 'Worker', 'wp-compact' ),
+				'threshold'           => __( 'threshold', 'wp-compact' ),
 				/* translators: %s: file name */
-				'uploadNoGain'        => __( 'WPsquoosh: %s not replaced (no savings, %s).', 'wpsquoosh' ),
+				'uploadNoGain'        => __( 'wp-compact: %s not replaced (no savings, %s).', 'wp-compact' ),
 				/* translators: 1: file name 2: savings percent 3: minimum percent */
-				'uploadBelowMin'      => __( 'WPsquoosh: %1$s skipped (savings %2$s%% < %3$s%%).', 'wpsquoosh' ),
+				'uploadBelowMin'      => __( 'wp-compact: %1$s skipped (savings %2$s%% < %3$s%%).', 'wp-compact' ),
 				/* translators: 1: file name 2: optional WebP label 3: original size 4: new size 5: savings percent */
-				'uploadDone'          => __( 'WPsquoosh: %1$s %2$s%3$s → %4$s (−%5$s%%).', 'wpsquoosh' ),
+				'uploadDone'          => __( 'wp-compact: %1$s %2$s%3$s → %4$s (−%5$s%%).', 'wp-compact' ),
 				/* translators: %s: file name */
-				'uploadUnreadable'    => __( 'WPsquoosh: cannot read %s — uploading original without compression.', 'wpsquoosh' ),
-				'uploadFileFallback'  => __( 'file', 'wpsquoosh' ),
+				'uploadUnreadable'    => __( 'wp-compact: cannot read %s — uploading original without compression.', 'wp-compact' ),
+				'uploadFileFallback'  => __( 'file', 'wp-compact' ),
 				/* translators: %d: number of images */
-				'uploadCompressing'   => __( 'WPsquoosh: compressing %d image(s)…', 'wpsquoosh' ),
+				'uploadCompressing'   => __( 'wp-compact: compressing %d image(s)…', 'wp-compact' ),
 				/* translators: 1: file name 2: error message */
-				'uploadFailedItem'    => __( 'WPsquoosh: failed on %1$s (%2$s) — sending original.', 'wpsquoosh' ),
+				'uploadFailedItem'    => __( 'wp-compact: failed on %1$s (%2$s) — sending original.', 'wp-compact' ),
 				/* translators: %s: error message */
-				'uploadError'         => __( 'WPsquoosh: %s', 'wpsquoosh' ),
+				'uploadError'         => __( 'wp-compact: %s', 'wp-compact' ),
 			),
 		);
 	}
@@ -136,21 +136,21 @@ class Admin_Page {
 	 * Enqueue upload JS/CSS once, after plupload/media so we can patch them.
 	 */
 	private function enqueue_upload_assets() {
-		if ( wp_script_is( 'wpsquoosh-upload', 'enqueued' ) ) {
+		if ( wp_script_is( 'wp-compact-upload', 'enqueued' ) ) {
 			return;
 		}
 
-		$css_path = WPSQUOOSH_PATH . 'assets/dist/admin.css';
-		$css_ver  = file_exists( $css_path ) ? (string) filemtime( $css_path ) : WPSQUOOSH_VERSION;
+		$css_path = WP_COMPACT_PATH . 'assets/dist/admin.css';
+		$css_ver  = file_exists( $css_path ) ? (string) filemtime( $css_path ) : WP_COMPACT_VERSION;
 		wp_enqueue_style(
-			'wpsquoosh-admin',
-			WPSQUOOSH_URL . 'assets/dist/admin.css',
+			'wp-compact-admin',
+			WP_COMPACT_URL . 'assets/dist/admin.css',
 			array(),
 			$css_ver
 		);
 
-		$js_path = WPSQUOOSH_PATH . 'assets/dist/admin-upload.js';
-		$js_ver  = file_exists( $js_path ) ? (string) filemtime( $js_path ) : WPSQUOOSH_VERSION;
+		$js_path = WP_COMPACT_PATH . 'assets/dist/admin-upload.js';
+		$js_ver  = file_exists( $js_path ) ? (string) filemtime( $js_path ) : WP_COMPACT_VERSION;
 
 		// Depend on media stack so wp.Uploader / plupload exist when we run.
 		$deps = array( 'jquery', 'plupload' );
@@ -161,13 +161,13 @@ class Admin_Page {
 		}
 
 		wp_enqueue_script(
-			'wpsquoosh-upload',
-			WPSQUOOSH_URL . 'assets/dist/admin-upload.js',
+			'wp-compact-upload',
+			WP_COMPACT_URL . 'assets/dist/admin-upload.js',
 			$deps,
 			$js_ver,
 			true
 		);
-		wp_localize_script( 'wpsquoosh-upload', 'wpSquooshConfig', $this->script_config() );
+		wp_localize_script( 'wp-compact-upload', 'wpCompactConfig', $this->script_config() );
 	}
 
 	/**
@@ -201,26 +201,26 @@ class Admin_Page {
 
 		$config = $this->script_config();
 
-		$css_path = WPSQUOOSH_PATH . 'assets/dist/admin.css';
-		$css_ver  = file_exists( $css_path ) ? (string) filemtime( $css_path ) : WPSQUOOSH_VERSION;
+		$css_path = WP_COMPACT_PATH . 'assets/dist/admin.css';
+		$css_ver  = file_exists( $css_path ) ? (string) filemtime( $css_path ) : WP_COMPACT_VERSION;
 		wp_enqueue_style(
-			'wpsquoosh-admin',
-			WPSQUOOSH_URL . 'assets/dist/admin.css',
+			'wp-compact-admin',
+			WP_COMPACT_URL . 'assets/dist/admin.css',
 			array(),
 			$css_ver
 		);
 
 		if ( $is_batch ) {
-			$js_path = WPSQUOOSH_PATH . 'assets/dist/admin-batch.js';
-			$js_ver  = file_exists( $js_path ) ? (string) filemtime( $js_path ) : WPSQUOOSH_VERSION;
+			$js_path = WP_COMPACT_PATH . 'assets/dist/admin-batch.js';
+			$js_ver  = file_exists( $js_path ) ? (string) filemtime( $js_path ) : WP_COMPACT_VERSION;
 			wp_enqueue_script(
-				'wpsquoosh-batch',
-				WPSQUOOSH_URL . 'assets/dist/admin-batch.js',
+				'wp-compact-batch',
+				WP_COMPACT_URL . 'assets/dist/admin-batch.js',
 				array(),
 				$js_ver,
 				true
 			);
-			wp_localize_script( 'wpsquoosh-batch', 'wpSquooshConfig', $config );
+			wp_localize_script( 'wp-compact-batch', 'wpCompactConfig', $config );
 		}
 
 		if ( $upload_on && ( $is_upload_screen || $is_batch ) ) {
@@ -233,8 +233,8 @@ class Admin_Page {
 	 */
 	public function render_page() {
 		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'Access denied.', 'wpsquoosh' ) );
+			wp_die( esc_html__( 'Access denied.', 'wp-compact' ) );
 		}
-		include WPSQUOOSH_PATH . 'admin/views/page-batch.php';
+		include WP_COMPACT_PATH . 'admin/views/page-batch.php';
 	}
 }
